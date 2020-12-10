@@ -1,1 +1,3 @@
 venv/
+microblog/__pycache__
+survey/__pycache__
