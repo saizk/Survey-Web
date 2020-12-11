@@ -2,18 +2,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Microblogging app</title>
+        <title>Surveys Web Application</title>
         <link rel="stylesheet"
-              href="{{ url_for('static', filename='microblog.css') }}">
+              href="{{ url_for('static', filename='survey.css') }}">
     </head>
     <body>
         <header>
-            <h1>Microblogging</h1>
+            <h1>Surveys Web Application</h1>
             <a href="{{ url_for('main.index') }}">Home</a>
+            <a href="{{ url_for('main.profile') }}">Profile</a>
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.signup') }}">Sign Up</a>
+            <!-- <a href="{{ url_for('auth.logout') }}">Logout</a> -->
         </header>
         <section class="content">
             {% block content %}{% endblock %}
         </section>
-        <footer><small>Developed for Web applications</small></footer>
+        <footer><small>Developed by Sergio Aizcorbe and Manuel Nuño</small></footer>
     </body>
 </html>

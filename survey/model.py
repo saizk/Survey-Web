@@ -15,17 +15,23 @@ class Message(db.Model):
     response_to_id = db.Column(db.Integer, db.ForeignKey('message.id'))
     response_to = db.relationship('Message', backref='responses', remote_side=[id], lazy=True)
 
-class Question(db.Model):
-    pass
+# class Survey(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     owner_id = db.Column(db.Integer, db.ForeignKey(user.id), nullable=False)
+#     title = db.Column(db.String(64), nullable=False)
+#     description = db.Column(db.String(128), nullable=True)
+#     # state = db.Column(*******, nullable=False)
+#     timestamp = db.Column(db.DateTime(), nullable=False)
 
-class QuestionOption(Question):
-    pass
+# class Question(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
 
-class QuestionAnswer(Question):
-    pass
 
-class Survey(db.Model):
-    pass
+# # class QuestionOption(Question):
+# #     pass
 
-class SurveyAnswer(Survey):
-    pass
+# # class QuestionAnswer(Question):
+# #     pass
+
+# class SurveyAnswer(Survey):
+#     timestamp = db.Column(db.DateTime(), nullable=False)

@@ -22,13 +22,29 @@ def signup_post():
     # Check if the email is already at the database
     user = model.User.query.filter_by(email=email).first()
     if user:
+        flash("Email address already exists")
         return redirect(url_for("auth.signup"))
     password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
+    # Create new user
     new_user = model.User(email=email, name=username, password=password_hash)
+    # Add user to the database
     db.session.add(new_user)
     db.session.commit()
     flash("You've successfully signed up!")
-    return redirect(url_for("main.index"))
+    return redirect(url_for("auth.login"))
 
+@bp.route("/login")
+def login():
+    return render_template("auth/login.html")
 
-    # Needed Exercise 7 from practice 2
+@bp.route('/login', methods=['POST'])
+def login_post():
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = model.User.query.filter_by(email=email).first()
+    return redirect(url_for('main.profile'))
+
+@bp.route('/logout')
+def logout():
+    return 'Logout'
