@@ -10,7 +10,6 @@ bp = Blueprint("auth", __name__)
 def signup():
     return render_template("auth/signup.html", current_user=current_user)
 
-
 @bp.route("/signup", methods=["POST"])
 def signup_post():
     email = request.form.get("email")
@@ -41,8 +40,16 @@ def login():
 def login_post():
     email = request.form.get("email")
     password = request.form.get("password")
+    remember = True if request.form.get("remember") else False
 
     user = model.User.query.filter_by(email=email).first()
+    
+    if not user or not bcrypt.check_password_hash(user.password, password):
+        flash(" Check your login credentials baby")
+        return redirect(url_for("auth.login"))
+    
+    login_user(user, remember=remember)
+    
     return redirect(url_for('main.profile'))
 
 @bp.route('/logout')
