@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from . import db, bcrypt
+from flask_login import login_user, logout_user, login_required, current_user
 
+from . import db, bcrypt
 from . import model
 
 bp = Blueprint("auth", __name__)
 
-
 @bp.route("/signup")
 def signup():
-    return render_template("auth/signup.html")
+    return render_template("auth/signup.html", current_user=current_user)
 
 
 @bp.route("/signup", methods=["POST"])
@@ -35,7 +35,7 @@ def signup_post():
 
 @bp.route("/login")
 def login():
-    return render_template("auth/login.html")
+    return render_template("auth/login.html", current_user=current_user)
 
 @bp.route('/login', methods=['POST'])
 def login_post():
@@ -46,5 +46,7 @@ def login_post():
     return redirect(url_for('main.profile'))
 
 @bp.route('/logout')
+@login_required
 def logout():
-    return 'Logout'
+    logout_user()
+    return redirect(url_for('main.index'))
