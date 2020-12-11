@@ -17,18 +17,20 @@ def signup_post():
     password = request.form.get("password")
     # Check that passwords are equal
     if password != request.form.get("password_repeat"):
+        flash("Passwords do not match!")
         return redirect(url_for("auth.signup"))
     # Check if the email is already at the database
     user = model.User.query.filter_by(email=email).first()
     if user:
         flash("Email address already exists")
         return redirect(url_for("auth.signup"))
+    # Create new user with its pwd hash
     password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
-    # Create new user
     new_user = model.User(email=email, name=username, password=password_hash)
     # Add user to the database
     db.session.add(new_user)
     db.session.commit()
+    # Successfull login
     flash("You've successfully signed up!")
     return redirect(url_for("auth.login"))
 
@@ -48,6 +50,7 @@ def login_post():
         flash(" Check your login credentials baby")
         return redirect(url_for("auth.login"))
     
+    # The user has the right credentials
     login_user(user, remember=remember)
     
     return redirect(url_for('main.profile'))

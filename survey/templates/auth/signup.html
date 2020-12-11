@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div>
+            {{ messages[0]}}. Go to <a href="{{ url_for('auth.login') }}">Login page</a>.
+        </div>
+    {% endif %}
+    {% endwith %}
     <h2>Sign Up</h2>
-    <!-- <form method="POST" action="{{ url_for('auth.login') }}" > -->
-    <form method="POST" action="/login" >
+    <!-- <form method="POST" action="{{ url_for('auth.signup') }}" > -->
+    <form method="POST" action="/signup" >
         <div><label>Email: <input type="email" name="email" required/></label></div>
         <div><label>User name: <input type="text" name="username" required/></label></div>
         <div><label>Password: <input type="password" name="password" required/></label></div>

@@ -38,6 +38,7 @@ def create_app(test_config=None):
     @login_manager.user_loader
     def load_user(user_id):
         from .model import User
+        # use user_id to identify the user in the table
         return User.query.get(int(user_id))
 
     return app
