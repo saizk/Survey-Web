@@ -17,7 +17,6 @@ def create_app(test_config=None):
     # ] = "mysql+mysqldb://survey:waDBlog@localhost/Survey"
     
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
-
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # Register blueprints:
