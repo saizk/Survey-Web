@@ -53,7 +53,7 @@ def login_post():
     # The user has the right credentials
     login_user(user, remember=remember)
     
-    return redirect(url_for('main.profile'))
+    return redirect(url_for('main.index', name=current_user.name))
 
 @bp.route('/logout')
 @login_required

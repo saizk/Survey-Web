@@ -11,8 +11,16 @@ def db_init(user, id, db):
 	pass
 
 if __name__== "__main__":
-	app = sys.argv[1] if len(sys.argv) > 1 else "survey"
-	env = sys.argv[2] if len(sys.argv) > 2 else "development"
+	cmd_args = [i for i in sys.argv[1:] if i.startswith("-")]
+	str_args = [i for i in sys.argv[1:] if not i.startswith("-")]
+
+	if "-r" in cmd_args:
+		os.system("rm survey/db.sqlite")
+		print("Previous database removed")
+
+	app = str_args[0] if len(str_args) > 1 else "survey"
+	env = str_args[1] if len(str_args) > 2 else "development"
+
 	init(app, env)
 	
 	# db_init("survey", "waDBlog", "Survey")

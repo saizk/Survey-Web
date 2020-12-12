@@ -1,0 +1,26 @@
+------------------------------------------------------------
+
+STATES:
+ * New --> Edit (add questions) / No public -> No answers
+ * Online --> Cant edit / Public -> Answers
+ * Closed --> Cant edit / No public -> No answers
+------------------------------------------------------------
+------------------------------------------------------------
+MAIN VIEW (auth):
+ * User can see owned surveys sorted by date
+ * Clicking redirect to View Survey
+ * Option to create a new survey
+------------------------------------------------------------
+SURVEY VIEW (auth):
+ * View the survey (title, question, state)
+ * Change state
+------------------------------------------------------------
+RESULST VIEW (auth):
+ * Basic statistics (no. ans, % of ans per choice forall questions)
+ * Extra func?
+------------------------------------------------------------
+ANSWERING VIEW (NO auth):
+ * Display survey
+ * Allow anon users to answer --> Submit all ans
+------------------------------------------------------------
+

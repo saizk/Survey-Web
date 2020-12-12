@@ -13,8 +13,8 @@ class User(UserMixin, db.Model):
         "Survey",
         backref="user",
         lazy=True,  # select
-        # cascade="all, delete-oprhan",
-        order_by="Survey.position"
+        cascade="all, delete-orphan",
+        # order_by="Survey.timestamp"
     )
     # messages = db.relationship(
     #     'Message',
@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
 #     response_to = db.relationship('Message', backref='responses', remote_side=[id], lazy=True)
 
 class SurveyState(enum.Enum):
-    new = 1,
+    new = 1
     online = 2
     closed = 3
 
@@ -42,8 +42,8 @@ class Survey(db.Model):
         "Question",
         backref="survey",
         lazy=True,
-        # cascade="all, delete-oprhan",
-        order_by="Question.position"
+        cascade="all, delete-orphan",
+        # order_by="Question.position"
     )
 
 class Question(db.Model):

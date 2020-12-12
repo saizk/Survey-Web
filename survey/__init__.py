@@ -28,6 +28,9 @@ def create_app(test_config=None):
     from . import main as main_bp
     app.register_blueprint(main_bp.bp)
     
+    from . import views as views_bp
+    app.register_blueprint(views_bp.bp)
+
     db.init_app(app)
     db.create_all(app=app)
 

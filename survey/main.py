@@ -7,7 +7,7 @@ from . import model
 
 bp = Blueprint("main", __name__)
 
-@bp.route("/")
+@bp.route("/", methods=["GET"])
 def index():
     # user = model.User(email="mary@example.com", name="mary")
     # posts = [
@@ -23,9 +23,10 @@ def index():
     #     ),
     # ]
     # return render_template("main/index.html", posts=posts)
-    return render_template("main/index.html", current_user=current_user)
+    return render_template("main/index.html")
 
-@bp.route("/profile")
-@login_required
-def profile():
-    return render_template("main/profile.html", name=current_user.name)
+
+# @bp.route("/mainview")
+# @login_required
+# def mainview():
+#     return render_template("views/mainview.html", current_user=current_user)
