@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <h2>Sign Up</h2>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-        <div>
-            {{ messages[0]}}. Go to <a href="{{ url_for('auth.login') }}">Login page</a>.
+        <div class="notification">
+            {{ messages[0]}}
         </div>
+        <div>Go to <a href="{{ url_for('auth.login') }}">Login page</a></div>
     {% endif %}
     {% endwith %}
-    <h2>Sign Up</h2>
+    <br>
     <!-- <form method="POST" action="{{ url_for('auth.signup') }}" > -->
     <form method="POST" action="/signup" >
         <div><label>Email: <input type="email" name="email" required/></label></div>
@@ -17,4 +19,5 @@
         <div><label>Repeat password: <input type="password" name="password_repeat" required/></label></div>
         <div><input type="submit" value="Sign Up"/></div>
     </form>
+    
 {% endblock %}
