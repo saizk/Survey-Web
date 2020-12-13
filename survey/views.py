@@ -7,21 +7,31 @@ from . import model
 
 bp = Blueprint("views", __name__)
 
-@bp.route("/mainview")
-@login_required
-def mainview():
-    return render_template("views/mainview.html", current_user=current_user, num_surveys=0)
-
-@bp.route("/surveyview")
+@bp.route("/my-surveys")
 @login_required
 def surveyview():
-    return render_template("views/surveyview.html",  current_user=current_user)
+    return render_template("views/surveyview.html",  current_user=current_user, num_surveys=0)
 
-@bp.route("/surveyview", methods=["POST"])
+@bp.route("/create-survey")
 @login_required
-def surveypost():
-    title = request.form.get("title")
+def createview():
+    return render_template("views/createview.html",  current_user=current_user, name=current_user.name)
+
+@bp.route("/create-survey", methods=["POST"])
+@login_required
+def createsurvey():
+    title = request.form.get("survey_title")
+    description = request.form.get("survey_description")
+    state = model.SurveyState.new
+    timestamp = datetime.datetime.now(dateutil.tz.tzlocal())
+
+    questions = None
+
+    new_survey = model.User(title=title, description=description, state=state, timestamp=timestamp, questions=questions)
+
     return redirect(url_for("views.surveyview"))
+
+
 
 @bp.route("/resultsview")
 @login_required

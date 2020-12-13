@@ -11,16 +11,20 @@
             <h1>Surveys Web Application</h1>
             <a href="{{ url_for('main.index') }}">Home</a>
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('views.mainview') }}">My Surveys</a>
-                <a href="{{ url_for('views.surveyview') }}">Create Surveys</a>
+                
+                <a href="{{ url_for('views.surveyview') }}">My Surveys</a>
+                <a href="{{ url_for('views.createview') }}">Create a Survey</a>
+
                 <a href="{{ url_for('views.resultsview') }}">My Results</a>
-                <a href="{{ url_for('views.answerview') }}">My Answers</a>
+                <!-- <a href="{{ url_for('views.answerview') }}">My Answers</a> -->
             {% endif %}
             {% if not current_user.is_authenticated %}
                 <a href="{{ url_for('auth.login') }}">Login</a>
                 <a href="{{ url_for('auth.signup') }}">Sign Up</a>
             {% endif %}
             {% if current_user.is_authenticated %}
+                <a href="{{ url_for('main.profile') }}">My Profile</a>
+
                 <a href="{{ url_for('auth.logout') }}">Logout</a>
                 <h2> Welcome {{current_user.name}} </h2>
             {% endif %}

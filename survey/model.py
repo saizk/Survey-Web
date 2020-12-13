@@ -84,10 +84,10 @@ class QuestionOption(db.Model):
 class QuestionAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer,db.ForeignKey("question.id"), nullable=False)
-    question_option_id = db.Column(db.Integer,db.ForeignKey("questionoption.id"), nullable=False)
+    question_option_id = db.Column(db.Integer,db.ForeignKey("question_option.id"), nullable=False)
     answer_text = db.Column(db.String(1024), nullable=False)
     answer_number = db.Column(db.Integer)
-    answer_list = db.Column(db.Integer,db.ForeignKey("questionoption.id"), nullable=False)
+    answer_list = db.Column(db.Integer,db.ForeignKey("question_option.id"), nullable=False)
 
 
 class SurveyAnswer(db.Model):
