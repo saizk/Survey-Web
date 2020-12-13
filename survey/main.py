@@ -24,9 +24,3 @@ def index():
     # ]
     # return render_template("main/index.html", posts=posts)
     return render_template("main/index.html")
-
-
-# @bp.route("/mainview")
-# @login_required
-# def mainview():
-#     return render_template("views/mainview.html", current_user=current_user)

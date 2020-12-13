@@ -1,7 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <h1>Profile</h1>
+    <script src="{{ url_for('static', filename='survey.js') }}"></script>
+    
+    <form method="POST" action="/surveyview">  
+        <div class="survey_title">
+            <span>Title of the survey: <input type="text" name="survey_title" placeholder="Type your title"/></span>
+        </div>
+        <div id ="question_id">
+            <!-- <div>Question {number}: <input class="question q0" name="question" placeholder="Type your question"></div> -->
+        </div>
+        <div class="survey_state">
+            <label for="state">State:</label>
+                <select name="state" id="state">
+                    <option value="new">New</option>
+                    <option value="new">Online</option>
+                    <option value="new">Closed</option>
+                </select>
+        </div>
+        <button type="button" onclick="adder()">Add question</button>
+        <div><input type="submit" value="Submit survey"/></div>
+    </form>
     
 {% endblock %}
