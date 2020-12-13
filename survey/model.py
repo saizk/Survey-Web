@@ -18,11 +18,6 @@ class User(UserMixin, db.Model):
     )
 
 
-# class Message(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     response_to_id = db.Column(db.Integer, db.ForeignKey('message.id'))
-#     response_to = db.relationship('Message', backref='responses', remote_side=[id], lazy=True)
-
 class SurveyState(enum.Enum):
     new = 1
     online = 2
@@ -37,12 +32,18 @@ class Survey(db.Model):
     timestamp = db.Column(db.DateTime(), nullable=False)
     questions = db.relationship(
         "Question",
-        backref="survey",
+        backref="Survey",
         lazy=True,
         cascade="all, delete-orphan",
         order_by="Question.position"
     )
-
+    answers = db.relationship(
+        "SurveyAnswer",
+        backref="Survey",
+        lazy=True,
+        cascade="all, delete-orphan",
+        # order_by="Question.position"
+    )
 
 class QuestionType(enum.Enum):
     OneAnswer = 1
@@ -54,27 +55,49 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     survey_id = db.Column(db.Integer,db.ForeignKey("survey.id"), nullable=False)
     statement = db.Column(db.String(1024), nullable=False)
-    type = db.Column(db.Enum(QuestionType), nullable=False)
+    question_type = db.Column(db.Enum(QuestionType), nullable=False)
     position = db.Column(db.Integer, nullable=False)
     options = db.relationship(
         "QuestionOption",
-        backref="option",
+        backref="Question",
         lazy=True,
         cascade="all, delete-orphan",
         # order_by= ??
+    )
+    answers = db.relationship(
+        "QuestionAnswer",
+        backref="Question",
+        lazy=True,
+        cascade="all, delete-orphan",
+        # order_by="Question.position"
     )
     
 
 class QuestionOption(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    question_id = db.Column(db.Integer,db.ForeignKey("question.id"), nullable=False)
+    statement = db.Column(db.String(1024), nullable=False)
+    position = db.Column(db.Integer, nullable=False)
+
+
 
 class QuestionAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # ...
+    question_id = db.Column(db.Integer,db.ForeignKey("question.id"), nullable=False)
+    question_option_id = db.Column(db.Integer,db.ForeignKey("questionoption.id"), nullable=False)
+    answer_text = db.Column(db.String(1024), nullable=False)
     answer_number = db.Column(db.Integer)
-    # ...
+    answer_list = db.Column(db.Integer,db.ForeignKey("questionoption.id"), nullable=False)
+
 
 class SurveyAnswer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    
+    id = db.Column(db.Integer, primary_key=True)  
+    survey_id = db.Column(db.Integer,db.ForeignKey("survey.id"), nullable=False) 
     timestamp = db.Column(db.DateTime(), nullable=False)
+    # answers = db.relationship(
+    #     "QuestionAnswer",
+    #     backref="SurveyAnswer",
+    #     lazy=True,
+    #     cascade="all, delete-orphan",
+    #     # order_by="Question.position"
+    # )
