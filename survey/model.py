@@ -90,22 +90,22 @@ class QuestionAnswer(db.Model):
         "QuestionOption",
         backref="QuestionAnswer",
         lazy=True,
-        cascade="all, delete-orphan",
+        # cascade="delete-orphan",
     )
 
-    answer_text = db.Column(db.String(1024), nullable=False) # QuestionType 3
+    answer_text = db.Column(db.String(1024)) # QuestionType 3
     answer_number = db.Column(db.Integer) # QuestionType 4
-
 
 
 class SurveyAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)  
-    survey_id = db.Column(db.Integer,db.ForeignKey("survey.id"), nullable=False) 
+    survey_id = db.Column(db.Integer, db.ForeignKey("survey.id"), nullable=False) 
     timestamp = db.Column(db.DateTime(), nullable=False)
+    answer_id = db.Column(db.Integer, db.ForeignKey("question_answer.id"), nullable=False)
     answers = db.relationship(
         "QuestionAnswer",
         backref="SurveyAnswer",
         lazy=True,
-        cascade="all, delete-orphan",
+        # cascade="all, delete-orphan",
         # order_by="Question.position"
     )

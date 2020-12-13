@@ -8,15 +8,15 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
 
-
 def create_app(test_config=None):
     app = Flask(__name__)
     app.config["SECRET_KEY"] = b"\x8c\xa5\x04\xb3\x8f\xa1<\xef\x9bY\xca/*\xff\x12\xfb"
     
     # app.config["SQLALCHEMY_DATABASE_URI"
-    # ] = "mysql+mysqldb://survey:waDBlog@localhost/Survey"
-    
+    # ] = "mysql+mysqldb://sergio:waDBlog@localhost/Survey"
+    # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqldb:///Survey.db"
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+    
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # Register blueprints:

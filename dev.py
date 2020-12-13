@@ -4,11 +4,6 @@ import os
 def init(app, env):
 	os.system("FLASK_APP=%s FLASK_ENV=%s flask run" % (app, env))
 
-def db_init(user, id, db):
-	#  os.system("sudo mysql")
-	# ...
-	#  os.system("mysql -u %(user)s -D %(db)s -p" % {user:user, db:db))
-	pass
 
 if __name__== "__main__":
 	cmd_args = [i for i in sys.argv[1:] if i.startswith("-")]
@@ -22,5 +17,3 @@ if __name__== "__main__":
 	env = str_args[1] if len(str_args) > 2 else "development"
 
 	init(app, env)
-	
-	# db_init("survey", "waDBlog", "Survey")
