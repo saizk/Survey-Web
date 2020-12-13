@@ -11,25 +11,32 @@ question_count = 0
 
 adder = () => {
     let my_html_str = `
-        <div>Question ${question_count+1}:<input class="question q${question_count}" 
-                                                name="question${question_count}" 
-                                                placeholder="Type your question" 
-                                                autofocus="">
-        </div>
-        // <div class="survey_state">
-        //     <label for="ans_type">  Answer type: </label>
-        //         <select name="ans_type" id="ans_type">
-        //             <option value="new">One-choice</option>
-        //             <option value="new">Multiple choice</option>
-        //             <option value="new">Text</option>
-        //             <option value="new">Number</option>
-        //         </select>
-        // </div>
+        <div>Question ${question_count+1}: 
+            // <input class="question q${question_count}" 
+            //         name="question${question_count}" 
+            //         placeholder="Type your question" 
+            //         autofocus="">
+        </div>`
+
+    //     // <div class="survey_state">
+    //     //     <label for="ans_type">  Answer type: </label>
+    //     //         <select name="ans_type" id="ans_type">
+    //     //             <option value="new">One-choice</option>
+    //     //             <option value="new">Multiple choice</option>
+    //     //             <option value="new">Text</option>
+    //     //             <option value="new">Number</option>
+    //     //         </select>
+    //     // </div>
     
-    `
+    // `
 
     question_count += 1
-    createElementFromHTML(my_html_str)
+
+    console.log(createElementFromHTML(my_html_str))
+    
+    document.getElementById("question_id").appendChild(document.createElement()
+
+    // document.createElement(createElementFromHTML(my_html_str))
     
     
     // let new_div  = document.createElement("div")
@@ -50,7 +57,7 @@ adder = () => {
 
     
 
-    // for(let element of document.getElementsByClassName("question")){
-    //     console.log(element.value)
-    // }
+    for(let element of document.getElementsByClassName("question")){
+        console.log(element.value)
+    }
 }
