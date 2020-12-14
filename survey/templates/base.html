@@ -6,33 +6,37 @@
         <link rel="stylesheet"
               href="{{ url_for('static', filename='survey.css') }}">
     </head>
+
+
     <body>
         <header>
-            <h1>Surveys Web Application</h1>
-            <a href="{{ url_for('main.index') }}">Home</a>
+            <h1><span class="blue">&lt;</span>Best<span class="blue">&gt;</span> <span class="yellow">Surveys</span> <span class="blue">&lt;</span>Online<span class="blue">&gt;</span></h1>
+            <a class="menuhome", href="{{ url_for('main.index') }}">Home</a>
             {% if current_user.is_authenticated %}
                 
-                <a href="{{ url_for('views.surveyview') }}">My Surveys</a>
-                <a href="{{ url_for('views.createview') }}">Create a Survey</a>
+                <a class="menu", href="{{ url_for('views.surveyview') }}">My Surveys</a>
+                <a class="menu", href="{{ url_for('views.createview') }}">Create a Survey</a>
 
-                <a href="{{ url_for('views.resultsview') }}">My Results</a>
+                <a class="menu", href="{{ url_for('views.resultsview') }}">My Results</a>
                 <!-- <a href="{{ url_for('views.answerview') }}">My Answers</a> -->
             {% endif %}
             {% if not current_user.is_authenticated %}
-                <a href="{{ url_for('auth.login') }}">Login</a>
-                <a href="{{ url_for('auth.signup') }}">Sign Up</a>
+                <a class="menu", href="{{ url_for('auth.login') }}">Login</a>
+                <a class="menu", href="{{ url_for('auth.signup') }}">Sign Up</a>
             {% endif %}
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('main.profile') }}">My Profile</a>
+                <a class="menu", href="{{ url_for('main.profile') }}">My Profile</a>
 
-                <a href="{{ url_for('auth.logout') }}">Logout</a>
-                <h2> Welcome {{current_user.name}} </h2>
+                <a class="menu", href="{{ url_for('auth.logout') }}">Logout</a>
+                
             {% endif %}
         </header>
 
         <section class="content">
-            {% block content %}{% endblock %}
+            {% block content %} {% endblock %}
         </section>
+
+        
         <footer><small>Developed by Sergio Aizcorbe and Manuel Nuño</small></footer>
     </body>
 </html>
