@@ -15,17 +15,25 @@ def surveyview():
 @bp.route("/create-survey")
 @login_required
 def createview():
-    return render_template("views/createview.html",  current_user=current_user, name=current_user.name)
+    return render_template("views/createview.html",  current_user=current_user)
+
+@bp.route("/create-survey", methods=["POST"])
+@login_required
+def createquestions():
+    title = request.form.get("survey_title")
+    description = request.form.get("survey_description")
+    state = 1
+    # timestamp = None
+    # questions = None
+    return render_template("views/createview.html",  current_user=current_user)
+    new_survey = model.User(title=title, description=description, state=state)
+    
 
 @bp.route("/create-survey", methods=["POST"])
 @login_required
 def createsurvey():
-    title = request.form.get("survey_title")
-    description = request.form.get("survey_description")
-    state = model.SurveyState.new
+    # state = model.SurveyState.new
     timestamp = datetime.datetime.now(dateutil.tz.tzlocal())
-
-    questions = None
 
     new_survey = model.User(title=title, description=description, state=state, timestamp=timestamp, questions=questions)
 
