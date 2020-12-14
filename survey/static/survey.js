@@ -1,43 +1,38 @@
-
-answer_deleters = []
 question_count = 0
+answer_deleters = []
 
-answer_checker = (question_idx) => {
+answer_checker = (question_idx) => {  // checks when the answer type changes
 
-    let answer_type = document.getElementById(`ans_type${question_idx}`).value
-    let button = document.getElementById(`answer_button${question_idx}`)
-
-    let answers = document.getElementsByClassName(`answerfor${question_idx}`)
+    let answer_type = document.getElementById(`ans_type${question_idx}`).value  // value of the select
+    let button = document.getElementById(`answer_button${question_idx}`) // "add answer" button
+    let answers = document.getElementsByClassName(`answerfor${question_idx}`)  // div for answers
 
     if (answer_type === "one" || answer_type ==="mult"){
+         // displays the "add answer" button
         button.style.display = "block"
         for (let answer of answers){
+            // displays all the question's answers 
             answer.style.display = "block"
         }
     }
     else {
+        // hides the "add answer" button
         button.style.display = "none"
         for (let answer of answers){
+            // hides all the question's answers 
             answer.style.display = "none"
         }
     }
 }
-
-answer_delete = (question_idx) => {
-
-    document.getElementById
-}
-
 question_adder = () => {
     let htmlString = `
         <div>
-            <div>Question ${question_count+1}: 
+            <div class="question_div">Question ${question_count+1}: 
                 <input class="question q${question_count}" 
                         name="question${question_count}" 
                         placeholder="Type your question">
-            
             </div>
-            <div class="survey_state">
+            <div class="ans_type_div">
                 <label for="ans_type">  Answer type: </label>
                     <select name="ans_type" id="ans_type${question_count}" onchange="answer_checker(${question_count})">
                         <option value="one">One-choice</option>
@@ -46,15 +41,14 @@ question_adder = () => {
                         <option value="num">Number</option>
                     </select>
             </div>
-    
             <button id="answer_button${question_count}" type="button" onclick="answer_adder(${question_count})">Add answer</button>
         </div>
     
     `
-    
+    // 
     let div = document.createElement('div');
     div.innerHTML = htmlString.trim();
-    global_div = div.firstChild
+    let global_div = div.firstChild
 
     document.getElementById("question_id").appendChild(global_div)
 

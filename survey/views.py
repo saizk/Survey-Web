@@ -3,48 +3,53 @@ import dateutil.tz
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from . import model
+from . import db, model
+
+from sqlalchemy import func
 
 bp = Blueprint("views", __name__)
 
 @bp.route("/my-surveys")
 @login_required
 def surveyview():
-    return render_template("views/surveyview.html",  current_user=current_user, num_surveys=0)
+    num_surveys = len(model.User.query.all())  # Unfinished query
+    return render_template("views/surveyview.html",  current_user=current_user, num_surveys=num_surveys)
 
 @bp.route("/create-survey")
 @login_required
 def createview():
     return render_template("views/createview.html",  current_user=current_user)
-
-@bp.route("/create-survey", methods=["POST"])
-@login_required
-def createquestions():
-    title = request.form.get("survey_title")
-    description = request.form.get("survey_description")
-    state = 1
-    # timestamp = None
-    # questions = None
-    return render_template("views/createview.html",  current_user=current_user)
-    new_survey = model.User(title=title, description=description, state=state)
     
 
 @bp.route("/create-survey", methods=["POST"])
 @login_required
 def createsurvey():
-    # state = model.SurveyState.new
+    title = request.form.get("survey_title")
+    description = request.form.get("survey_desc")
+    state = model.SurveyState.new
     timestamp = datetime.datetime.now(dateutil.tz.tzlocal())
+    questions = request.form.get("question0") # Example
+    # questions = request.form.getlist("question_list")
+    
+    new_survey = model.Survey(title=title, description=description, state=state, timestamp=timestamp)
 
-    new_survey = model.User(title=title, description=description, state=state, timestamp=timestamp, questions=questions)
+    for question in questions:
+        new_question = model.Question(user=current_user, statement=question, question_type=1)
 
-    return redirect(url_for("views.surveyview"))
+    if not title:
+        flash("")
+        return redirect(url_for("views.createview"))
+
+    db.session.add(new_survey)
+    db.session.commit()
+    return redirect(url_for("views.surveyview", questions=questions))
 
 
-
-@bp.route("/resultsview")
+@bp.route("/results")
 @login_required
-def resultsview():
-    return render_template("views/resultsview.html",  current_user=current_user)
+def resultsview(survey_id):
+    survey = model.Survey.query.filter_by(id=survey_id)
+    return render_template("views/resultsview.html",  current_user=current_user, survey=survey)
 
 @bp.route("/answerview")
 @login_required
