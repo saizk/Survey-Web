@@ -41,7 +41,7 @@ color: #4DC3FA;
     line-height:1em;
     text-align: center;
     color: #ffffff;
-    margin-left: 8%;
+    margin-left: 17%;
 
     /* padding-left: 4%;
     padding-right: 3%; */
@@ -251,5 +251,48 @@ padding: 0 0 0 0;
 }
 
 
+
+.addsurveybutton{
+    font-family: 'Open Sans', sans-serif;
+    color: #fff;
+    background: hsl(123, 71%, 22%);
+    
+    font-size:4em; 
+    font-weight: 200;
+    text-align: center;
+    
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 2%;
+    display: flex;
+
+    margin:auto;
+    padding-left: 10%;
+    padding-bottom: 4%;
+    padding-top: 4%;
+    padding-right:10%;
+
+    
+    margin-bottom: 6%;
+    margin-top: 2%;
+    
+
+}
+
+
+
 /* END OF SURVEYVIEW */
+
+/* PROFILE VIEW */
+
+/* .profile{
+
+
+} */
+
+/* HOMEVIEW */
+
+/* END OF HOMEVIEW */
 

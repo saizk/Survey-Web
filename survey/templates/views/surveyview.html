@@ -11,53 +11,62 @@
         <div>Do you want to <a href="{{ url_for('views.createview') }}">CREATE</a> a survey?</div>
     {% endif %} -->
     
-    <section class="username_display"> Welcome {{current_user.name}} </section>
+    
 
     <h3><span class="blue">&lt;</span>My<span class="blue">&gt;</span> <span class="yellow">Surveys</pan></h3>
-        <h4>Here you can see all your surveys</h4>
+
+        <button class="addsurveybutton", onclick= "location.href = '/create-survey';">CREATE A NEW SURVEY</button>
+
+        <h4>You have a total of {{survey_number}} surveys</h4>
         
-        <table class="bigcell">
-            <thead>
-                <tr>
-                    <th class="header"><h1>Surveys</h1></th>
-                    <th class="header"><h1>Information</h1></th>
-                    
-                </tr>
-            </thead>
 
 
+        {% if survey_number > 0 %}
+        
 
-            <tbody>
-
-
-
-                <tr>                    
-                    <td class="firstcol"> survey1</td>
-                    <td class="secondcol" > 
+        
+            <table class="bigcell">
+                <thead>
+                    <tr>
+                        <th class="header"><h1>Surveys</h1></th>
+                        <th class="header"><h1>Information</h1></th>
                         
-                        <table class="smallcell">
-                             <tr>                    
-                                <td class="insidetable"> titulo</td>
-                                <td class="insidetable"> status </td>
-                                <td class="insidetable"> editar encuesta</td>
-
-                            </tr>
-                            <tr>
-                                <td class="insidetable"> #gente que ha respondido</td>
-                                <td class="insidetable"> ver resultados </td>
-                                <td class="insidetable"> cambiar estado de la encuesta </td>
-                          
-
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+                    </tr>
+                </thead>
 
 
-            </tbody>
-        </table>
+
+                <tbody>
+
+
+
+                    <tr>                    
+                        <td class="firstcol"> survey1</td>
+                        <td class="secondcol" > 
+                            
+                            <table class="smallcell">
+                                <tr>                    
+                                    <td class="insidetable"> titulo</td>
+                                    <td class="insidetable"> status </td>
+                                    <td class="insidetable"> editar encuesta</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="insidetable"> #gente que ha respondido</td>
+                                    <td class="insidetable"> ver resultados </td>
+                                    <td class="insidetable"> cambiar estado de la encuesta </td>
+                            
+
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
     
   
-  
+        {% endif %}
     
 {% endblock %}

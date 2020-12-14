@@ -47,7 +47,7 @@ def login_post():
     user = model.User.query.filter_by(email=email).first()
     
     if not user or not bcrypt.check_password_hash(user.password, password):
-        flash(" Check your login credentials baby")
+        flash(" Check your login credentials")
         return redirect(url_for("auth.login"))
     
     # The user has the right credentials

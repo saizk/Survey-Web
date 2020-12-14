@@ -4,6 +4,9 @@ import dateutil.tz
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from . import model
+from sqlalchemy import func
+from . import db
+
 
 bp = Blueprint("main", __name__)
 
@@ -85,4 +88,7 @@ def index():
 
 @bp.route("/profile")
 def profile():
-    return render_template("main/profile.html")
+   
+    survey_number = len(model.Survey.query.filter_by(owner_id = current_user.id).all())
+
+    return render_template("main/profile.html", survey_number = survey_number)  

@@ -12,8 +12,8 @@ bp = Blueprint("views", __name__)
 @bp.route("/my-surveys")
 @login_required
 def surveyview():
-    num_surveys = len(model.User.query.all())  # Unfinished query
-    return render_template("views/surveyview.html",  current_user=current_user, num_surveys=num_surveys)
+    survey_number = len(model.Survey.query.filter_by(owner_id = current_user.id).all())
+    return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number)
 
 @bp.route("/create-survey")
 @login_required
@@ -34,7 +34,7 @@ def createsurvey():
     new_survey = model.Survey(title=title, description=description, state=state, timestamp=timestamp)
 
     for question in questions:
-        new_question = model.Question(user=current_user, statement=question, question_type=1)
+        new_question = model.Question(question_id = question.id, statement=question, question_type=1)
 
     if not title:
         flash("")
@@ -55,3 +55,6 @@ def resultsview(survey_id):
 @login_required
 def answerview():
     return render_template("views/answerview.html",  current_user=current_user)
+
+
+
