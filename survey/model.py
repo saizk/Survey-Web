@@ -68,7 +68,13 @@ class Question(db.Model):
         cascade="all, delete-orphan",
         # order_by= ??
     )
-
+    # answers = db.relationship(
+    #     "QuestionAnswer",
+    #     backref="Question",
+    #     lazy=True,
+    #     cascade="all, delete-orphan",
+    #     # order_by="Question.position"
+    # )
     
 
 class QuestionOption(db.Model):
