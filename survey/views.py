@@ -13,6 +13,7 @@ bp = Blueprint("views", __name__)
 @login_required
 def surveyview():
     survey_number = len(model.Survey.query.filter_by(owner_id = current_user.id).all())
+    
     return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number)
 
 @bp.route("/create-survey")
@@ -28,21 +29,22 @@ def createsurvey():
     description = request.form.get("survey_desc")
     state = model.SurveyState.new
     timestamp = datetime.datetime.now(dateutil.tz.tzlocal())
-    questions = request.form.get("question0") # Example
-    # questions = request.form.getlist("question_list")
+    # questions = request.form.get("question0") # Example
+    questions = request.form.getlist("question_list")
     
-    new_survey = model.Survey(title=title, description=description, state=state, timestamp=timestamp)
-
-    for question in questions:
-        new_question = model.Question(question_id = question.id, statement=question, question_type=1)
-
     if not title:
         flash("")
         return redirect(url_for("views.createview"))
 
+    new_survey = model.Survey(owner_id=current_user.id, title=title, description=description, state=state, timestamp=timestamp)
     db.session.add(new_survey)
     db.session.commit()
+
+    for question in questions:
+        new_question = model.Question(survey_id=new_survey.id, statement=question, question_type=1)
+
     return redirect(url_for("views.surveyview", questions=questions))
+
 
 
 @bp.route("/results")
