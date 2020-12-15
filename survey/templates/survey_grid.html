@@ -1,0 +1,45 @@
+
+<link href="toggle-radios.css" rel="stylesheet" />
+
+<table class="bigcell">
+
+
+    <tbody>
+        <tr>                    
+            <td class="firstcol"> Survey {{sur_number}}</td>
+            <td class="secondcol" > 
+                
+
+                <div class="smallcell">
+                    <div class="insidetable-wide">          
+                        <span class="insidetable" style="max-width: 33%; min-width: 150px;"> Title: {{survey.title}} </span>
+                        <span class="insidetable" style="max-width: 33%; min-width: 150px">Number of Answers: {{answer_number[survey.id]}}</span>
+                        <span class="insidetable" style="max-width: 33%; min-width: 150px"> Status: {{survey.state.name.capitalize()}}  </span>
+                        
+                    </div>
+
+                    <div class="insidetable-wide"style="margin-top: 2%;">          
+                        
+                        <span class="insidetable" style="max-width: 33%; min-width: 150px; cursor:pointer;" onclick= "location.href = '/create-survey';" > Edit Survey</span>
+                        <span class="insidetable" style="max-width: 33%; min-width: 150px; cursor:pointer;" onclick= "location.href = '/create-survey';" > View Results </span>
+                        
+                        <!-- html for triple button taken from https://www.cssscript.com/segmented-control-toggle-radio/ -->
+                        <span class="toggle-radio" data-style="rounded">
+                            <input type="radio" name="new_button" id="default_Option1" value="Option1" checked>
+                            <label for="default_Option1">New</label>
+                          
+                            <input type="radio" name="online_button" id="default_Option2" value="Option2" >
+                            <label for="default_Option2">Online</label>
+                          
+                            <input type="radio" name="closed_button" id="default_Option3" value="Option3">
+                            <label for="default_Option3">Closed</label>
+                        </span>
+                        <!-- <span class="insidetable" style="max-width: 33%; min-width: 150px"> cambiar estado de la encuesta </span> -->
+                    </div>
+               </div>       
+            </td>
+        </tr>
+
+
+    </tbody>
+</table>

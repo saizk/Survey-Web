@@ -12,58 +12,56 @@
     {% endif %} -->
     
     
+    survey_list = model.Survey.query.filter_by(owner_id = current_user.id).all()
+    survey_number = len(survey_list)
+
+    answer_number = {}
+    for survey in survey_list:
+        answer_number[survey.id] = len(model.SurveyAnswer.query.filter_by(survey_id = survey.id).all())
+
+                
+    
+    return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number, survey_list=survey_list, answer_number = answer_number) 
+
+    
 
     <h3><span class="blue">&lt;</span>My<span class="blue">&gt;</span> <span class="yellow">Surveys</span></h3>
 
         <button class="addsurveybutton", onclick= "location.href = '/create-survey';">CREATE A NEW SURVEY</button>
 
         <h4>You have a total of {{survey_number}} surveys</h4>
-        {% if questions %}
+
+
+        <table class="bigcell">
+            <thead>
+                <tr>
+                    <th class="header"><h1>Surveys</h1></th>
+                    <th class="header"><h1>Information</h1></th>
+                    
+                </tr>
+            </thead>
+        
+        </table>
+        
+        <!-- {% if questions %}
             <h2>Questions {{questions}}</h2>
-        {% endif %}
+        {% endif %} -->
 
         {% if survey_number > 0 %}
         
-        
-            <table class="bigcell">
-                <thead>
-                    <tr>
-                        <th class="header"><h1>Surveys</h1></th>
-                        <th class="header"><h1>Information</h1></th>
-                        
-                    </tr>
-                </thead>
+            {%for survey in survey_list%}               
+                
+                {% with %}
+                {% set sur_number = loop.index %}
+                    <section>
+                        {% include 'survey_grid.html' %}
+                    </section> 
+                
+                {% endwith %}
 
+            {%endfor%}
 
-
-                <tbody>
-
-
-
-                    <tr>                    
-                        <td class="firstcol"> survey1</td>
-                        <td class="secondcol" > 
-                            
-
-                            <div class="smallcell">
-                                <div class="insidetable-wide"style="padding-top: 25px;">          
-                                    <span class="insidetable" style="max-width: 33%; min-width: 150px;"> titulo </span>
-                                    <span class="insidetable" style="max-width: 33%; min-width: 150px"> status</span>
-                                    <span class="insidetable" style="max-width: 33%; min-width: 150px"> editar encuesta</span>
-                                </div>
-
-                                <div class="insidetable-wide"style="margin-top: 50px;padding-bottom: 25px;">          
-                                    <span class="insidetable" style="max-width: 33%; min-width: 150px">#gente que ha respondido </span>
-                                    <span class="insidetable" style="max-width: 33%; min-width: 150px"> ver resultados </span>
-                                    <span class="insidetable" style="max-width: 33%; min-width: 150px"> cambiar estado de la encuesta </span>
-                                </div>
-                           </div>       
-                        </td>
-                    </tr>
-
-
-                </tbody>
-            </table>
+            
     
   
         {% endif %}
