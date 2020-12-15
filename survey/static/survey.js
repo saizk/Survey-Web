@@ -1,10 +1,11 @@
 question_count = 0
+question_deleters = []
 answer_deleters = []
 
 qtype_checker = (question_idx) => {  // checks when the answer type changes
 
-    let answer_type = document.getElementById(`ans_type${question_idx}`).value  // value of the select
-    let button = document.getElementById(`answer_button${question_idx}`) // "add answer" button
+    let answer_type = document.getElementById(`question_type${question_idx}`).value  // value of the select
+    let button = document.getElementById(`add_answer_button${question_idx}`) // "add answer" button
     let answers = document.getElementsByClassName(`answerfor${question_idx}`)  // div for answers
 
     if (answer_type === "one" || answer_type ==="mult"){
@@ -24,6 +25,14 @@ qtype_checker = (question_idx) => {  // checks when the answer type changes
         }
     }
 }
+
+// question_remover = (question_idx) => {
+
+//     let button = document.getElementById(`del_question_button${question_idx}`) // "add answer" button
+
+// }
+/* <button id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_deleters[${question_deleters.length}]()"> X </button> */
+
 question_adder = () => {
     let htmlString = `
         <div>
@@ -32,25 +41,32 @@ question_adder = () => {
                         name="question" 
                         placeholder="Type your question">
             </div>
+
             <div class="question_type_div">
                 <label for="question_type">  Answer type: </label>
-                    <select name="question_type" id="question_type${question_count}" onchange="qtype_checker(${question_count})">
+                    <select name="question_type${question_count}" id="question_type${question_count}" onchange="qtype_checker(${question_count})">
                         <option value="one">One-choice</option>
                         <option value="mult">Multiple choice</option>
                         <option value="text">Text</option>
                         <option value="num">Number</option>
                     </select>
             </div>
-            <button id="answer_button${question_count}" type="button" onclick="answer_adder(${question_count})">Add answer</button>
+            <button id="add_answer_button${question_count}" type="button" onclick="answer_adder(${question_count})">Add answer</button>
         </div>
     
     `
-    // 
     let div = document.createElement('div');
     div.innerHTML = htmlString.trim();
     let global_div = div.firstChild
 
     document.getElementById("question_id").appendChild(global_div)
+
+    // let question_list = document.getElementById("question_id").children[question_count]
+    // question_list.appendChild(global_div)
+
+    // question_deleters.push(() => {
+    //     question_list.removeChild(global_div)
+    // })
 
     question_count += 1
 }
@@ -69,10 +85,10 @@ answer_adder = (question_idx) => {
     div.innerHTML = htmlString.trim();
     let global_div = div.firstChild
 
-    let question_list = document.getElementById("question_id").children[question_idx]
-    question_list.appendChild(global_div)
+    let answer_list = document.getElementById("question_id").children[question_idx]
+    answer_list.appendChild(global_div)
 
     answer_deleters.push(() => {
-        question_list.removeChild(global_div)
+        answer_list.removeChild(global_div)
     })
 }

@@ -1,3 +1,4 @@
+
 import datetime
 import dateutil.tz
 
@@ -31,6 +32,18 @@ def resultsview(survey_id):
 def answerview():
     return render_template("views/answerview.html",  current_user=current_user)
 
+
+def question_mapper(value):
+    if value == "one":
+        return(model.QuestionType.OneAnswer)
+    elif value == "mult":
+        return(model.QuestionType.ManyAnswers)
+    elif value == "text":
+        return(model.QuestionType.TextAnswer)
+    elif value == "num":
+        return(model.QuestionType.NumberAnswer)
+    return -1
+
 @bp.route("/create-survey", methods=["POST"])
 @login_required
 def createsurvey():
@@ -39,19 +52,18 @@ def createsurvey():
     state = model.SurveyState.new
     timestamp = datetime.datetime.now(dateutil.tz.tzlocal())
 
-    if not title:
-        flash("")
-        return redirect(url_for("views.createview"))
-
-    new_survey = model.Survey(owner_id=current_user.__index__, title=title, description=description, state=state, timestamp=timestamp)
+    new_survey = model.Survey(owner_id=current_user.id, title=title, description=description, state=state, timestamp=timestamp)
 
     db.session.add(new_survey)
     db.session.commit()
 
     questions = request.form.getlist("question")
     question_objects = []
+
     for idx, question in enumerate(questions):
-        question_type = model.QuestionType.NumberAnswer  #hardcoded
+        qrawtype = request.form.get("question_type%d" % idx)
+        question_type = question_mapper(qrawtype)
+
         new_question = model.Question(survey_id=new_survey.id, statement=question, question_type=question_type, position=idx+1)
         db.session.add(new_question)
         question_objects.append(new_question)
@@ -65,5 +77,9 @@ def createsurvey():
             db.session.add(new_option)
     
     db.session.commit()
+
+    if not title or not questions:
+        flash("Cannot submit survey")
+        return redirect(url_for("views.createview"))
 
     return redirect(url_for("views.surveyview"))
