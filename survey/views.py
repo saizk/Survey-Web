@@ -12,9 +12,10 @@ bp = Blueprint("views", __name__)
 @bp.route("/my-surveys")
 @login_required
 def surveyview():
-    survey_number = len(model.Survey.query.filter_by(owner_id = current_user.id).all())
-    
-    return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number)
+    survey_list = model.Survey.query.filter_by(owner_id = current_user.id).all()
+    survey_number = len(survey_list)
+    for survey in survey_list:
+        return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number, survey_id = survey.id)
 
 @bp.route("/create-survey")
 @login_required
