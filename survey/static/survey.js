@@ -1,5 +1,5 @@
 question_count = 0
-question_deleters = []
+// question_deleters = []
 answer_deleters = []
 
 qtype_checker = (question_idx) => {  // checks when the answer type changes
@@ -26,21 +26,23 @@ qtype_checker = (question_idx) => {  // checks when the answer type changes
     }
 }
 
-question_remove = (question_idx) => {
+// question_remove = (question_idx) => {
 
-    let button = document.getElementById(`del_question_button${question_idx}`) // "add answer" button
+//     document.getElementById(`del_question_button${question_idx}`).style.display = "none"
+//     document.getElementById(`question${question_idx}`).style.display = "none"
+// }
 
-}
+
+/* <button id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_remove(${question_count})"> X </button> */
 
 
 question_adder = () => {
     let htmlString = `
-        <div>
+        <div name="question${question_count}">
             <div class="question_div">Question ${question_count+1}: 
                 <input class="question q${question_count}" 
                         name="question" 
                         placeholder="Type your question">
-                <button id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_remove(${question_count})"> X </button>
             </div>
             <div class="question_type_div">
                 <label for="question_type">  Answer type: </label>
@@ -52,6 +54,7 @@ question_adder = () => {
                     </select>
             </div>
             <button id="add_answer_button${question_count}" type="button" onclick="answer_adder(${question_count})">Add answer</button>
+
         </div>
     
     `
@@ -68,6 +71,7 @@ question_adder = () => {
     //     question_list.removeChild(global_div)
     // })
 
+    answer_adder(question_count)
     question_count += 1
 }
 

@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Profile</h1>
-    
+    <h1>Title: {{selected_survey.statement}}</h1>
+    <h2>Description: {{selected_survey.description}}</h2>
+    {% for question, answers in info %}
+        <h3>Question {{loop.index}}: {{question.statement}}</h3>
+        {% if answers %} <!-- {% if question.question_type == "one" or question.question_type == "mult" %}{%endif%} -->
+            <ul> {% for answer in answers %}    
+                <li>Option: {{answer.statement}}</li>
+            {% endfor %} </ul>
+        {% endif %}
+    {% endfor %}
+    <a href="{{url_for('views.display_public_survey', survey_hash=selected_survey.survey_hash)}}"><h2>Public link {{selected_survey.survey_hash}}</h2></a>
 {% endblock %}
