@@ -1,7 +1,7 @@
 question_count = 0
 answer_deleters = []
 
-answer_checker = (question_idx) => {  // checks when the answer type changes
+qtype_checker = (question_idx) => {  // checks when the answer type changes
 
     let answer_type = document.getElementById(`ans_type${question_idx}`).value  // value of the select
     let button = document.getElementById(`answer_button${question_idx}`) // "add answer" button
@@ -29,12 +29,12 @@ question_adder = () => {
         <div>
             <div class="question_div">Question ${question_count+1}: 
                 <input class="question q${question_count}" 
-                        name="question${question_count}" 
+                        name="question" 
                         placeholder="Type your question">
             </div>
-            <div class="ans_type_div">
-                <label for="ans_type">  Answer type: </label>
-                    <select name="ans_type" id="ans_type${question_count}" onchange="answer_checker(${question_count})">
+            <div class="question_type_div">
+                <label for="question_type">  Answer type: </label>
+                    <select name="question_type" id="question_type${question_count}" onchange="qtype_checker(${question_count})">
                         <option value="one">One-choice</option>
                         <option value="mult">Multiple choice</option>
                         <option value="text">Text</option>
@@ -60,7 +60,7 @@ answer_adder = (question_idx) => {
     let htmlString = `
         <div class="answerfor${question_idx}">Answer: 
             <input class="answer q${question_idx}" 
-                    name="answer${question_idx}" 
+                    name="answerfor${question_idx}" 
                     placeholder="Type your answer">
             <button id="del_answer_button${question_idx}" type="button" tabindex="-1" onclick="answer_deleters[${answer_deleters.length}]()"> X </button>
         </div>

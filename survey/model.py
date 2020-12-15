@@ -14,7 +14,7 @@ class User(UserMixin, db.Model):
         backref="user",
         lazy=True,  # select
         cascade="all, delete-orphan",
-        order_by="Survey.timestamp"
+        order_by="Survey.timestamp",
     )
 
 
@@ -26,23 +26,25 @@ class SurveyState(enum.Enum):
 class Survey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
     title = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(512), nullable=True)
     state = db.Column(db.Enum(SurveyState), nullable=False)
     timestamp = db.Column(db.DateTime(), nullable=False)
+
     questions = db.relationship(
         "Question",
-        backref="Survey",
+        backref="survey",
         lazy=True,
         cascade="all, delete-orphan",
         order_by="Question.position"
     )
     answers = db.relationship(
         "SurveyAnswer",
-        backref="Survey",
+        backref="survey",
         lazy=True,
         cascade="all, delete-orphan",
-        # order_by="Question.position"
+        order_by="Question.position"
     )
 
 class QuestionType(enum.Enum):
@@ -54,13 +56,14 @@ class QuestionType(enum.Enum):
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     survey_id = db.Column(db.Integer,db.ForeignKey("survey.id"), nullable=False)
+    
     statement = db.Column(db.String(1024), nullable=False)
-
     question_type = db.Column(db.Enum(QuestionType), nullable=False)
     position = db.Column(db.Integer, nullable=False)
+
     options = db.relationship(
         "QuestionOption",
-        backref="Question",
+        backref="question",
         lazy=True,
         cascade="all, delete-orphan",
         # order_by= ??

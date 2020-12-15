@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
 
 from . import db, bcrypt
@@ -52,6 +52,7 @@ def login_post():
     
     # The user has the right credentials
     login_user(user, remember=remember)
+    session["user"] = current_user.id
     
     return redirect(url_for('main.index', name=current_user.name))
 
@@ -59,4 +60,5 @@ def login_post():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main.index'))
+    session.pop("user", None)
+    return render_template("main/index.html")

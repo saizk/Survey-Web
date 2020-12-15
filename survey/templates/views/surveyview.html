@@ -13,17 +13,17 @@
     
     
 
-    <h3><span class="blue">&lt;</span>My<span class="blue">&gt;</span> <span class="yellow">Surveys</pan></h3>
+    <h3><span class="blue">&lt;</span>My<span class="blue">&gt;</span> <span class="yellow">Surveys</span></h3>
 
         <button class="addsurveybutton", onclick= "location.href = '/create-survey';">CREATE A NEW SURVEY</button>
 
         <h4>You have a total of {{survey_number}} surveys</h4>
-        
-
+        {% if questions %}
+            <h2>Questions {{questions}}</h2>
+        {% endif %}
 
         {% if survey_number > 0 %}
         
-
         
             <table class="bigcell">
                 <thead>

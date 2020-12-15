@@ -1,7 +1,7 @@
 import datetime
 import dateutil.tz
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_required, current_user
 from . import db, model
 
@@ -19,31 +19,6 @@ def surveyview():
 @login_required
 def createview():
     return render_template("views/createview.html",  current_user=current_user)
-    
-
-@bp.route("/create-survey", methods=["POST"])
-@login_required
-def createsurvey():
-    title = request.form.get("survey_title")
-    description = request.form.get("survey_desc")
-    state = model.SurveyState.new
-    timestamp = datetime.datetime.now(dateutil.tz.tzlocal())
-    questions = request.form.get("question0") # Example
-    # questions = request.form.getlist("question_list")
-    
-    new_survey = model.Survey(title=title, description=description, state=state, timestamp=timestamp)
-
-    for question in questions:
-        new_question = model.Question(question_id = question.id, statement=question, question_type=1)
-
-    if not title:
-        flash("")
-        return redirect(url_for("views.createview"))
-
-    db.session.add(new_survey)
-    db.session.commit()
-    return redirect(url_for("views.surveyview", questions=questions))
-
 
 @bp.route("/results")
 @login_required
@@ -55,6 +30,44 @@ def resultsview(survey_id):
 @login_required
 def answerview():
     return render_template("views/answerview.html",  current_user=current_user)
+
+@bp.route("/create-survey", methods=["POST"])
+@login_required
+def createsurvey():
+    title = request.form.get("survey_title")
+    description = request.form.get("survey_desc")
+    state = model.SurveyState.new
+    timestamp = datetime.datetime.now(dateutil.tz.tzlocal())
+
+    if not title:
+        flash("")
+        return redirect(url_for("views.createview"))
+
+    new_survey = model.Survey(owner_id=session["user"], title=title, description=description, state=state, timestamp=timestamp)
+
+    db.session.add(new_survey)
+    db.session.commit()
+
+    questions = request.form.getlist("question")
+    question_objects = []
+    for idx, question in enumerate(questions):
+        question_type = model.QuestionType.NumberAnswer  #hardcoded
+        new_question = model.Question(survey_id=new_survey.id, statement=question, question_type=question_type, position=idx+1)
+        db.session.add(new_question)
+        question_objects.append(new_question)
+        
+    db.session.commit()
+
+    for i, new_question in enumerate(question_objects):
+        options = request.form.getlist("answerfor%d" % i)
+        for j, option in enumerate(options):
+            new_option = model.QuestionOption(question_id=new_question.id, statement=option, position=j+1)
+            db.session.add(new_option)
+    
+    db.session.commit()
+
+    return redirect(url_for("views.surveyview"))
+
 
 
 
