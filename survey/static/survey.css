@@ -9,22 +9,49 @@
 
 
 body {
-font-family: 'Open Sans', sans-serif;
-font-weight: 300;
-line-height: 1.42em;
-color:#A7A1AE;
-background-color:#1F2739;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.42em;
+    color:#A7A1AE;
+    background-color:#1F2739;
 }
 
 h1 {
-font-size:4em; 
-font-weight: 500;
-line-height:1em;
-text-align: center;
-color: #4DC3FA;
+    font-size:4em; 
+    font-weight: 500;
+    line-height:1em;
+    text-align: center;
+    color: #4DC3FA;
 }
 
-.menu {
+.topnav{
+    font-size:2em; 
+    font-weight: 300;
+    float: center;
+    background-color: #4CAF50;
+    text-align: center;
+    padding: 20px 16px;
+    text-decoration: none;
+}
+
+/* Change the color of links on hover */
+.topnav menu:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+/* Add a color to the active/current link */
+.topnav a.menuhome {
+    border-left: 2px solid #bbb;
+    border-right: 2px solid #bbb;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.topnav a.menu {
+    border-right: 1px solid #bbb;
+}
+/* .menu {
     font-size:2em; 
     font-weight: 300;
     line-height:1em;
@@ -33,19 +60,20 @@ color: #4DC3FA;
 
     margin-left: 5%;
     /* padding-left: 3%;
-    padding-right: 3%; */
-}
-.menuhome {
+    padding-right: 3%;
+} */
+
+/* .menuhome {
     font-size:2em; 
     font-weight: 300;
     line-height:1em;
     text-align: center;
     color: #ffffff;
-    margin-left: 17%;
+    margin-left: 17%; */
 
     /* padding-left: 4%;
     padding-right: 3%; */
-}
+/* } */
 
 
 h2 {
