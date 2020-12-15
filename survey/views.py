@@ -12,8 +12,10 @@ bp = Blueprint("views", __name__)
 @bp.route("/my-surveys")
 @login_required
 def surveyview():
-    survey_number = len(model.Survey.query.filter_by(owner_id = current_user.id).all())
-    return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number)
+    survey_list = model.Survey.query.filter_by(owner_id = current_user.id).all()
+    survey_number = len(survey_list)
+    for survey in survey_list:
+        return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number, survey_id = survey.id)
 
 @bp.route("/create-survey")
 @login_required
@@ -38,15 +40,25 @@ def createsurvey():
     description = request.form.get("survey_desc")
     state = model.SurveyState.new
     timestamp = datetime.datetime.now(dateutil.tz.tzlocal())
+<<<<<<< HEAD
 
+=======
+    # questions = request.form.get("question0") # Example
+    questions = request.form.getlist("question_list")
+    
+>>>>>>> c55cef632517fef7653037c805bc1292769ef64a
     if not title:
         flash("")
         return redirect(url_for("views.createview"))
 
-    new_survey = model.Survey(owner_id=session["user"], title=title, description=description, state=state, timestamp=timestamp)
-
+    new_survey = model.Survey(owner_id=current_user.id, title=title, description=description, state=state, timestamp=timestamp)
     db.session.add(new_survey)
     db.session.commit()
+
+    for question in questions:
+        new_question = model.Question(survey_id=new_survey.id, statement=question, question_type=1)
+
+    return redirect(url_for("views.surveyview", questions=questions))
 
     questions = request.form.getlist("question")
     question_objects = []
@@ -58,6 +70,7 @@ def createsurvey():
         
     db.session.commit()
 
+<<<<<<< HEAD
     for i, new_question in enumerate(question_objects):
         options = request.form.getlist("answerfor%d" % i)
         for j, option in enumerate(options):
@@ -67,6 +80,14 @@ def createsurvey():
     db.session.commit()
 
     return redirect(url_for("views.surveyview"))
+=======
+
+@bp.route("/results")
+@login_required
+def resultsview(survey_id):
+    survey = model.Survey.query.filter_by(id=survey_id)
+    return render_template("views/resultsview.html",  current_user=current_user, survey=survey)
+>>>>>>> c55cef632517fef7653037c805bc1292769ef64a
 
 
 
