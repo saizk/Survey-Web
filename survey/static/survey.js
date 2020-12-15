@@ -26,12 +26,12 @@ qtype_checker = (question_idx) => {  // checks when the answer type changes
     }
 }
 
-// question_remover = (question_idx) => {
+question_remove = (question_idx) => {
 
-//     let button = document.getElementById(`del_question_button${question_idx}`) // "add answer" button
+    let button = document.getElementById(`del_question_button${question_idx}`) // "add answer" button
 
-// }
-/* <button id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_deleters[${question_deleters.length}]()"> X </button> */
+}
+
 
 question_adder = () => {
     let htmlString = `
@@ -40,8 +40,8 @@ question_adder = () => {
                 <input class="question q${question_count}" 
                         name="question" 
                         placeholder="Type your question">
+                <button id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_remove(${question_count})"> X </button>
             </div>
-
             <div class="question_type_div">
                 <label for="question_type">  Answer type: </label>
                     <select name="question_type${question_count}" id="question_type${question_count}" onchange="qtype_checker(${question_count})">
