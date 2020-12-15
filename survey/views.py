@@ -43,7 +43,7 @@ def createsurvey():
         flash("")
         return redirect(url_for("views.createview"))
 
-    new_survey = model.Survey(owner_id=session["user"], title=title, description=description, state=state, timestamp=timestamp)
+    new_survey = model.Survey(owner_id=current_user.__index__, title=title, description=description, state=state, timestamp=timestamp)
 
     db.session.add(new_survey)
     db.session.commit()

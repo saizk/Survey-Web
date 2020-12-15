@@ -52,7 +52,7 @@ def login_post():
     
     # The user has the right credentials
     login_user(user, remember=remember)
-    session["user"] = current_user.id
+    # session["user"] = current_user.id
     
     return redirect(url_for('main.index', name=current_user.name))
 
@@ -60,5 +60,5 @@ def login_post():
 @login_required
 def logout():
     logout_user()
-    session.pop("user", None)
+    # session.pop("user", None)
     return render_template("main/index.html")

@@ -12,7 +12,17 @@
                     <td class="firstcol">  {{current_user.name}}  icon</td>
                     <td class="secondcol" > 
                         
-                        <table class="smallcell">
+                        <div class="smallcell">
+                            <div class="insidetable-wide"style="padding-top: 25px;">          
+                                <span class="insidetable" style="max-width: 33%"> Account name: {{current_user.name}} </span>
+                                <span class="insidetable" style="max-width: 33%"> Account email: {{current_user.email}} </span>
+                                <span class="insidetable" style="max-width: 33%"> Number of surveys: {{survey_number}}</span>
+                            </div>
+
+                            <div class="insidetable insidetable-wide" style="margin-top: 50px;"> change password?? </div>    
+                        </div>
+
+                        <!-- <table class="smallcell">
                              <tr>                    
                                 <td class="insidetable"> Account name: {{current_user.name}}  </td>
                                 <td class="insidetable"> Account email: {{current_user.email}}  </td>
@@ -23,7 +33,7 @@
                                 <td></td>
                                 <td class="insidetable"> change password?? </td>                          
                             </tr>
-                        </table>
+                        </table> -->
                     </td>
                 </tr>
 
