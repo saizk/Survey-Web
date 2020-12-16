@@ -33,21 +33,21 @@
                         <!-- html for triple button taken from https://www.cssscript.com/segmented-control-toggle-radio/ -->
                         <span class="toggle-radio" data-style="rounded">
                             
-                            <div class="colornew" onclick="state_change('default_Option1{{survey.id}}{{sur_number}}', 'survey_status{{survey.id}}')" > 
-                                <input type="radio" name="button_row{{sur_number}}" id="default_Option1{{survey.id}}{{sur_number}}" value="New" checked >
-                                <label for="default_Option1{{survey.id}}{{sur_number}}">New</label>
+                            <div class="colornew" onclick="state_change('default_Option1{{sur_number}}', 'survey_status{{survey.id}}')" > 
+                                <input type="radio" name="button_row{{sur_number}}" id="default_Option1{{sur_number}}" value="New" checked >
+                                <label for="default_Option1{{sur_number}}">New</label>
                             </div>
                             
 
-                            <div class="coloronline" onclick="state_change('default_Option2{{survey.id}}{{sur_number}}', 'survey_status{{survey.id}}')" >
-                                <input type="radio" name="button_row{{sur_number}}" id="default_Option2{{survey.id}}{{sur_number}}" value="Online" >
-                                <label  for="default_Option2{{survey.id}}{{sur_number}}">Online</label>
+                            <div class="coloronline" onclick="state_change('default_Option2{{sur_number}}', 'survey_status{{survey.id}}')" >
+                                <input type="radio" name="button_row{{sur_number}}" id="default_Option2{{sur_number}}" value="Online" >
+                                <label  for="default_Option2{{sur_number}}">Online</label>
                             </div>
 
 
-                            <div class="colorclosed" onclick="state_change('default_Option3{{survey.id}}{{sur_number}}', 'survey_status{{survey.id}}')" >
-                                <input  type="radio" name="button_row{{sur_number}}" id="default_Option3{{survey.id}}{{sur_number}}" value="Closed">
-                                <label for="default_Option3{{survey.id}}{{sur_number}}" >Closed</label>
+                            <div class="colorclosed" onclick="state_change('default_Option3{{sur_number}}', 'survey_status{{survey.id}}')" >
+                                <input  type="radio" name="button_row{{sur_number}}" id="default_Option3{{sur_number}}" value="Closed">
+                                <label for="default_Option3{{sur_number}}" >Closed</label>
                             </div>
                         </span>
                     </div>
