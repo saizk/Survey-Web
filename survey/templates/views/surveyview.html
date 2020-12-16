@@ -12,16 +12,6 @@
     {% endif %} -->
     
     
-    survey_list = model.Survey.query.filter_by(owner_id = current_user.id).all()
-    survey_number = len(survey_list)
-
-    answer_number = {}
-    for survey in survey_list:
-        answer_number[survey.id] = len(model.SurveyAnswer.query.filter_by(survey_id = survey.id).all())
-
-                
-    
-    return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number, survey_list=survey_list, answer_number = answer_number) 
 
     
 

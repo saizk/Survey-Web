@@ -96,3 +96,22 @@ answer_adder = (question_idx) => {
         answer_list.removeChild(global_div)
     })
 }
+
+
+
+state_change = (button_id, status_id) =>{
+    
+    let survey_state = document.getElementById(button_id).value;   
+    let survey_status = document.getElementById(status_id)
+    survey_status.innerText = "Status: " + survey_state; 
+    
+    
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,73 @@
+/*
+Toggle Radios v1.1
+by Adam Culpepper | @adamculpepper
+https://github.com/adamculpepper/toggle-radios
+*/
+
+/* Customizable styles */
+
+/* Colors: Default (blue) */
+.toggle-radio {background:#f5f5f5; border:0px solid #ccc;}
+.toggle-radio > div > input:checked + label {border-radius:500px;}
+.toggle-radio > div > input + label:not(:last-of-type) {border-right:0px solid #ccc;}
+
+
+
+.toggle-radio > .colornew  > input:checked + label {
+    
+    background:lightblue;
+    
+}
+
+.toggle-radio > .coloronline  > input:checked + label {
+    background:springgreen;
+}
+.toggle-radio > .colorclosed > input:checked + label {
+    background:tomato;
+}
+
+/* Rounded corners */
+.toggle-radio {border-radius:4px;}
+
+/* //////////////////////////
+CORE STYLES BELOW - NO TOUCHY
+////////////////////////// */
+.toggle-radio {display:inline-flex;}
+.toggle-radio > div > input[type='radio'] {display:none;}
+.toggle-radio > div > input[disabled] + label {opacity:0.50;}
+.toggle-radio > div > input[disabled] + label:hover {cursor:not-allowed;}
+.toggle-radio > div > input + label {display:inline-block; margin-bottom:0; padding:5px 10px; cursor:pointer;}
+
+/* Transitions */
+.toggle-radio > div > input:checked + label {transition:background 300ms linear;}
+
+/* //////////////////////////
+CORE STYLES ABOVE - NO TOUCHY
+////////////////////////// */
+
+/* Style: Rounded */
+.toggle-radio[data-style='rounded'] {border-radius:500px;}
+
+/* Style: Square
+.toggle-radio[data-style='square'] {border-radius:0;} */
+
+/* Color: Red */
+.toggle-radio[data-color='red'] > input:checked + label		{background:rgba(231, 76, 60, 0.60);}
+
+/* Color: Orange */
+.toggle-radio[data-color='orange'] > input:checked + label	{background:rgba(230, 126, 34, 0.60);}
+ 
+ /* Color: Yellow */
+.toggle-radio[data-color='yellow'] > input:checked + label	{background:rgba(241, 196, 15, 0.60);}
+
+/* Color: Green */
+.toggle-radio[data-color='green'] > input:checked + label	{background:rgba(46, 204, 113, 0.60);}
+
+/* Color: Blue */
+.toggle-radio[data-color='blue'] > input:checked + label	{background:rgba(52, 152, 219, 0.60);}
+
+/* Color: Purple */
+.toggle-radio[data-color='purple'] > input:checked + label	{background:rgba(155, 89, 182, 0.60);}
+
+/* Color: Gray */
+.toggle-radio[data-color='gray'] > input:checked + label	{background:rgba(85, 85, 85, 0.60);}

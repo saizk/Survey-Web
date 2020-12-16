@@ -106,6 +106,12 @@ color: #FB667A;
 text-decoration: none;
 } */
  
+.firstcol a {
+
+    color:teal;
+    text-decoration: none;
+}
+
 h3 {
 font-size:3em; 
 font-weight: 300;
