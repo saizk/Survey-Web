@@ -12,17 +12,53 @@ from sqlalchemy import func
 
 bp = Blueprint("views", __name__)
 
-@bp.route("/my-surveys")
+
+
+
+def survey_status_changer(survey, new_status):
+    if new_status == "New":
+        survey.state = model.SurveyState.new
+    elif new_status == "Online":
+        survey.state = model.SurveyState.online
+    elif new_status == "Closed":
+        survey.state = model.SurveyState.closed
+
+
+
+@bp.route("/my-surveys", methods=["POST", "GET"])
 @login_required
 def survey_view():
-    survey_query = model.Survey.query.filter_by(owner_id = current_user.id)
-    survey_list = survey_query.all()
-    survey_number = survey_query.count()
-    question_list = [model.Question.query.filter_by(survey_id=survey.id).all()
-                      for survey in survey_list]
-    # answer_list = [[(question.id, model.SurveyAnswer.query.filter_by(question_id = question.id).count()) for question in survey] for survey in question_list]
 
-    return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number, survey_list=survey_list)
+    if request.method == "POST":
+        status = request.form.get("survey_status")
+        survey = model.Survey.query.get(int(request.form.get("survey_id")))
+        
+        survey_status_changer(survey,status)
+        db.session.commit()
+
+    survey_list = model.Survey.query.filter_by(owner_id = current_user.id).all()
+    survey_number = len(survey_list)
+
+    answer_number = {}
+    for survey in survey_list:
+        answer_number[survey.id] = len(model.SurveyAnswer.query.filter_by(id = survey.id).all())   
+
+    status_list={}  
+    for survey in survey_list:
+        current_survey_state = model.Survey.query.filter_by(id = survey.id).first()
+        status_list[survey.id] = current_survey_state.state.name
+
+        
+    return render_template("views/surveyview.html",  current_user=current_user, survey_number=survey_number, survey_list=survey_list, answer_number = answer_number, status_list=status_list) 
+
+
+# @bp.route("/my-surveys")
+# @login_required
+# def survey_view():
+#     survey_list = model.Survey.query.filter_by(owner_id = current_user.id).all()
+#     answer_list = [(survey.id, len(model.SurveyAnswer.query.filter_by(survey_id = survey.id).all()))
+#                    for survey in survey_list]    
+#     return render_template("views/surveyview.html",  current_user=current_user, survey_number=len(survey_list), survey_list=survey_list, answer_number=answer_list) 
 
 @bp.route("/my-surveys/survey<int:survey_id>")
 @login_required
