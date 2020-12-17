@@ -12,7 +12,7 @@
             
             <div class="answer_question">
                 
-                {% for question, answers in info %}
+                {% for question, answers in question_list %}
                     <div class="question_title">Question {{loop.index}}: {{question.statement}}</div> 
                     <div class="question_type"> Question type: {{question.question_type.name}}</div>
                     {% if answers %}
@@ -28,7 +28,7 @@
             <div class= "sur_desc"><b>Description: </b>{{selected_survey.description}}</div>
         
             <form class="formy" method="POST" action="/{{selected_survey.survey_hash}}/answer">
-                {% for question, answers in info %}
+                {% for question, answers in question_list %}
                     <div class="question_title">{{question.statement}}</div> 
                     
                     {% set q_num = loop.index %}
@@ -52,7 +52,7 @@
     
                     {% elif question.question_type.name == "NumberAnswer" %}
                         <div class="question_type"> Select a number:</div>
-                        <div class="numerito"><input  type="number" name="answer_q{{q_num}}" id="answer_q{{q_num}}" min="{{1}}" min="{{100}}"></div>
+                        <div class="numerito"><input  type="number" name="ans_q{{q_num}}" id="ans_q{{q_num}}" min="{{1}}" min="{{100}}"></div>
                         
                     {% endif %}
                 {% endfor %}

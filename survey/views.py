@@ -48,7 +48,7 @@ def create_answer(survey_hash):
     questions = request.form.getlist("question")
     for q_idx in range(len(questions)):
         selected_ans_options = request.form.getlist("ans_q%d" % (q_idx+1))
-        if not selected_ans_options:
+        if not selected_ans_options or any(not a for a in selected_ans_options):
             flash("Answer %d is empty" % (q_idx+1))
             return redirect(url_for("views.display_public_server", survey_hash=selected_survey.survey_hash))
     
@@ -60,15 +60,16 @@ def create_answer(survey_hash):
         
         selected_ans_options = request.form.getlist("ans_q%d" % (q_idx+1))
         print("Selected options:", selected_ans_options)
-
+        print("statement",question.statement)
+        
+        text, number = None, None
         if question.question_type.name == "TextAnswer":
             text = selected_ans_options[0]
             print("text:", text)
         elif question.question_type.name == "NumberAnswer":
+            print(selected_ans_options)
             number = int(selected_ans_options[0])
             print("number", number)
-        else:
-            text, number = None, None
         
         for a_idx, ans_statement in enumerate(selected_ans_options):
             ans_options = model.QuestionOption.query.filter_by(question_id=question.id, position=a_idx+1).all()
@@ -80,10 +81,6 @@ def create_answer(survey_hash):
                                         question_option_id=ans_option.id,
                                         answer_id=selected_survey.id
                                     )
-                if text:
-                    text = None
-                if number:
-                    number = None
                 db.session.add(new_question_answer)
                 db.session.commit()
     
@@ -195,27 +192,36 @@ def add_question(survey_hash):
 @bp.route("/my-surveys/<survey_hash>")
 @login_required
 def display_survey(survey_hash):
-    selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first()
-    questions = model.Question.query.filter_by(survey_id=selected_survey.id).order_by("position").all()
-    question_list =  [(question, model.QuestionOption.query.filter_by(question_id=question.id).all()) 
-                      for question in questions]
-    return render_template("views/answerview.html",  current_user=current_user, selected_survey=selected_survey, info=question_list)
+    selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first_or_404()
+    survey_questions = model.Question.query.filter_by(survey_id=selected_survey.id).order_by("survey_id").all()
+    survey_answers = model.SurveyAnswer.query.filter_by(survey_id=selected_survey.id).order_by("survey_id").all()
+    question_answers = [model.QuestionAnswer.query.filter_by(answered_question_id=question_answer.id).all()
+                            for question_answer in survey_answers]
+
+    surveys_info = [(survey_answer, list(zip(survey_questions, question_answers[idx])))
+                    for idx, survey_answer in enumerate(survey_answers)]
+
+
+    print("survey quetsions:", survey_questions)
+    print("answers", survey_answers)
+    print("question answers", question_answers)
+    
+    print("Answers", list(surveys_info))
+
+    return render_template("views/answerview.html", selected_survey=selected_survey, surveys_info=surveys_info)
 
 @bp.route("/<survey_hash>")
 def display_public_survey(survey_hash):
     selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first_or_404()
-    questions = model.Question.query.filter_by(survey_id=selected_survey.id).order_by("position").all()
-    answers = model.SurveyAnswer.query.filter_by(survey_id=selected_survey.id).all()
 
-    answer_list = [(answer, )
-                    for answer in answers]
+    questions = model.Question.query.filter_by(survey_id=selected_survey.id).order_by("position").all()
     question_list =  [(question, model.QuestionOption.query.filter_by(question_id=question.id).all()) 
                       for question in questions]
-    return render_template("views/answerview.html", selected_survey=selected_survey, info=question_list, answers=answers)
 
+    # question_list =  [(question, model.QuestionOption.query.filter_by(question_id=question.id).all()) 
+    #                   for question in survey_questions]
+    
+    # answer_list = [(answer, model.QuestionAnswer.query.filter_by(survey_id=selected_survey.id).all())
+    #                 for answer in survey_answers]
+    return render_template("views/answerview.html",  current_user=current_user, selected_survey=selected_survey, question_list=question_list)
 
-@bp.route("/<survey_hash>/results")
-@login_required
-def resultsview(survey_hash):
-    selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first()
-    return render_template("views/resultsview.html",  current_user=current_user, survey=selected_survey)
