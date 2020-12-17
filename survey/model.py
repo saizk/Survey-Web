@@ -25,7 +25,7 @@ class SurveyState(enum.Enum):
 class Survey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    survey_hash = db.Column(db.String(512), nullable=False)
+    survey_hash = db.Column(db.String(32), nullable=False)
 
     title = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(512), nullable=True)

@@ -19,7 +19,7 @@
         <h1>Title: {{selected_survey.title}}</h1>
         <h2>Description: {{selected_survey.description}}</h2>
 
-        <form method="POST" action="/survey/{{selected_survey.survey_hash}}/answer">
+        <form method="POST" action="/{{selected_survey.survey_hash}}/answer">
             {% for question, answers in info %}
                 <h3>Question {{loop.index}}: {{question.statement}}</h3>
                 

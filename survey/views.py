@@ -1,4 +1,3 @@
-
 import datetime
 import dateutil.tz
 
@@ -13,8 +12,6 @@ from sqlalchemy import func
 bp = Blueprint("views", __name__)
 
 
-
-
 def survey_status_changer(survey, new_status):
     if new_status == "New":
         survey.state = model.SurveyState.new
@@ -22,7 +19,6 @@ def survey_status_changer(survey, new_status):
         survey.state = model.SurveyState.online
     elif new_status == "Closed":
         survey.state = model.SurveyState.closed
-
 
 
 @bp.route("/my-surveys", methods=["POST", "GET"])
@@ -60,16 +56,16 @@ def survey_view():
 #                    for survey in survey_list]    
 #     return render_template("views/surveyview.html",  current_user=current_user, survey_number=len(survey_list), survey_list=survey_list, answer_number=answer_list) 
 
-@bp.route("/my-surveys/survey<int:survey_id>")
+@bp.route("/my-surveys/<survey_hash>")
 @login_required
-def display_survey(survey_id):
-    selected_survey = model.Survey.query.filter_by(id=survey_id).first()
-    questions = model.Question.query.filter_by(survey_id=survey_id).order_by("position").all()
+def display_survey(survey_hash):
+    selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first()
+    questions = model.Question.query.filter_by(survey_id=selected_survey.id).order_by("position").all()
     question_list =  [(question, model.QuestionOption.query.filter_by(question_id=question.id).all()) 
                       for question in questions]
     return render_template("views/answerview.html",  current_user=current_user, selected_survey=selected_survey, info=question_list)
 
-@bp.route("/survey/<survey_hash>")
+@bp.route("/<survey_hash>")
 def display_public_survey(survey_hash):
     selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first()
     questions = model.Question.query.filter_by(survey_id=selected_survey.id).order_by("position").all()
@@ -82,7 +78,7 @@ def display_public_survey(survey_hash):
 def create_view():
     return render_template("views/createview.html", current_user=current_user)
 
-@bp.route("/survey/<survey_hash>/answer", methods=["POST", "GET"])
+@bp.route("/<survey_hash>/answer", methods=["POST", "GET"])
 def create_answer(survey_hash):
     selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first()
 
@@ -126,10 +122,10 @@ def create_answer(survey_hash):
 
     return render_template("main/index.html",  current_user=current_user)
 
-@bp.route("/results")
+@bp.route("/<survey_hash>/results")
 @login_required
-def resultsview(survey_id):
-    survey = model.Survey.query.filter_by(id=survey_id)
+def resultsview(survey_hash):
+    survey = model.Survey.query.filter_by(survey_hash=survey_hash)
     return render_template("views/resultsview.html",  current_user=current_user, survey=survey)
 
 def question_mapper(value):
@@ -189,3 +185,26 @@ def create_survey():
     db.session.commit()
 
     return redirect(url_for("views.survey_view"))
+
+
+@bp.route("/my-surveys/<survey_hash>/addquestion")
+@login_required
+def add_question_view(survey_hash):
+    selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first()
+    return render_template("views/editview.html", selected_survey=selected_survey)
+
+@bp.route("/my-surveys/<survey_hash>/addquestion", methods=["POST", "GET"])
+@login_required
+def add_question(survey_hash):
+    selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first()
+    num_question =  model.Question.query.filter_by(survey_id=selected_survey.id).count() # position
+    print(num_question, type(num_question))
+    questions = request.form.getlist("question")
+    print(questions)
+    for idx, question in enumerate(questions):
+        qrawtype = request.form.get("question_type%d" % idx)
+        question_type = question_mapper(qrawtype)
+        new_question = model.Question(survey_id=selected_survey.id, statement=question, question_type=question_type, position=int(num_question)+1)
+        db.session.add(new_question)
+        db.session.commit()
+    return redirect(url_for("views.display_survey", survey_hash=selected_survey.survey_hash))  

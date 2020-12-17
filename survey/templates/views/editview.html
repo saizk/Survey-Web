@@ -3,7 +3,7 @@
 {% block content %}
     <!-- <script src="{{ url_for('static', filename='createsurvey.js') }}"></script> -->
 
-    <form method="POST" action="/create-survey">  
+    <form method="POST" action="/edit_survey, {{survey_hash=selected_survey.survey_hash}}">  
         <div class="survey_info" id="survey_id">
             <div>Title of the survey: <input type="text" name="survey_title" placeholder="Type your title"/></div>
             <textarea name="survey_desc" style="width:400px; height:50px;" placeholder="Type your description (optional)"></textarea>
