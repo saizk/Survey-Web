@@ -18,22 +18,6 @@
 
         <h4>You have a total of {{survey_number}} surveys</h4>
 
-
-        <table class="bigcell">
-            <thead>
-                <tr>
-                    <th class="header"><h1>Surveys</h1></th>
-                    <th class="header"><h1>Information</h1></th>
-                    
-                </tr>
-            </thead>
-        
-        </table>
-        
-        <!-- {% if questions %}
-            <h2>Questions {{questions}}</h2>
-        {% endif %} -->
-
         {% if survey_number > 0 %}
         
             {%for survey in survey_list%}               
