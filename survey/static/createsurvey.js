@@ -40,7 +40,7 @@ question_adder = () => {
                 <input name="num_q${question_count}" class="numq" type="number" min="1">
                 <input class="question q${question_count}" 
                         name="question" 
-                        placeholder="Type your question">
+                        placeholder=" Type your question">
                 <button class="xbutton" id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_deleters[${question_deleters.length}]()"> X </button>
             </div>
             
@@ -94,7 +94,7 @@ answer_adder = (question_idx) => {
             <input class="answer_text"
                     class="answer q${question_idx}" 
                     name="answerfor${question_idx}" 
-                    placeholder="Type your answer">
+                    placeholder=" Type your answer">
             <button class= "xanswer" id="del_answer_button${question_idx}" type="button" tabindex="-1" onclick="answer_deleters[${answer_deleters.length}]()"> X </button>
         </div>
     `
