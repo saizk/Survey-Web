@@ -360,6 +360,7 @@ padding: 0 0 0 0;
     align-items: center;
     justify-content: center;
     /* text-align: center; */
+    flex-direction: column;
 }
 
 .form_region{
@@ -483,4 +484,10 @@ input {
 
 .create_survey{
     margin-top: 8px;
+
+}
+
+
+.signup{
+    margin-bottom: 8px;
 }

@@ -3,7 +3,7 @@
 {% block content %}
     <h3>Sign Up</h3>
 
-    
+
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="notification">
@@ -14,12 +14,12 @@
     {% endwith %}
     <br>
     <!-- <form method="POST" action="{{ url_for('auth.signup') }}" > -->
-    <form method="POST" action="/signup" >
-        <div><label>Email: <input type="email" name="email" required/></label></div>
-        <div><label>User name: <input type="text" name="username" required/></label></div>
-        <div><label>Password: <input type="password" name="password" required/></label></div>
-        <div><label>Repeat password: <input type="password" name="password_repeat" required/></label></div>
-        <div><input type="submit" value="Sign Up"/></div>
+    <form class="new_survey"  method="POST" action="/signup" >
+        <div class="signup"><label>Email: <input type="email" name="email" required/></label></div>
+        <div class="signup"><label>User name: <input type="text" name="username" required/></label></div>
+        <div class="signup"><label>Password: <input type="password" name="password" required/></label></div>
+        <div class="signup"><label>Repeat password: <input type="password" name="password_repeat" required/></label></div>
+        <div class="signup"><input type="submit" value="Sign Up"/></div>
     </form>
     
 {% endblock %}
