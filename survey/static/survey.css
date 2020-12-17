@@ -492,7 +492,7 @@ input {
 }
 
 .create_survey{
-    margin-top: 8px;
+        margin-top: 8px;
     
     width: 80%;
 
@@ -540,6 +540,7 @@ input {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    overflow-wrap:break-word;
 
     /* margin: 2%; */
     width: 50%;
@@ -637,11 +638,21 @@ input {
     /* text-decoration: underline; */
     font-weight: 300;
     text-align: center;
-    display: block;
+    
     line-height:1em;
-    color: darkgray;
+    color: black;
     /* margin-top: 2%; */
+    /* margin-bottom: 2%; */
+
+    text-align: left;
+    display: flex;
+    align-items: left;
+    justify-content: center;
+    flex-direction: column;
+
     margin-bottom: 2%;
+
+    width: 25%
 
 }
 
@@ -712,4 +723,16 @@ input {
 
 .titulo{
     font-size: 1.3em;
+}
+
+
+.delete_button{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    margin-top: 30px;
+
 }

@@ -218,3 +218,28 @@ def display_public_survey(survey_hash):
     
     return render_template("views/answerview.html",  current_user=current_user, selected_survey=selected_survey, question_list=question_list)
 
+
+
+@bp.route("/delete-survey", methods=["POST", "GET"])
+@login_required
+def delete_survey():
+    
+    if request.method == "POST":
+        survey = model.Survey.query.get(int(request.form.get("survey_id")))
+        
+        survey.delete()
+        db.session.commit()
+
+    survey_list = model.Survey.query.filter_by(owner_id = current_user.id).all()
+    survey_number = len(survey_list)
+
+    answer_number = {}
+    for survey in survey_list:
+        answer_number[survey.id] = model.SurveyAnswer.query.filter_by(id = survey.id).count()
+
+    status_list={}  
+    for survey in survey_list:
+        current_survey_state = model.Survey.query.filter_by(id = survey.id).first()
+        status_list[survey.id] = current_survey_state.state.name
+
+    return render_template("views/surveyview.html",current_user=current_user, survey_number=survey_number, survey_list=survey_list, answer_number=answer_number, status_list=status_list) 
