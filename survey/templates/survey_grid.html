@@ -37,19 +37,19 @@
                                 <input name = "survey_id" value="{{survey.id}}" hidden>
                                 <input id = "survey{{sur_number}}" name = "survey_status" value="{{survey.state.name.capitalize()}}" hidden>
 
-                                <div class="colornew" onclick="state_change('default_Option1{{survey.id}}{{sur_number}}', 'survey_status{{survey.id}}', 'button_stat_change{{survey.id}}{{sur_number}}', 'survey{{sur_number}}', 'default_Option1{{survey.id}}{{sur_number}}')" > 
-                                    <input type="radio" name="button_row" id="default_Option1{{survey.id}}{{sur_number}}" value="New" checked=true>
+                                <div class="colornew" onclick="state_change('default_Option1{{survey.id}}{{sur_number}}', 'survey_status{{survey.id}}', 'button_stat_change{{survey.id}}{{sur_number}}', 'survey{{sur_number}}')" > 
+                                    <input type="radio" name="button_row" id="default_Option1{{survey.id}}{{sur_number}}" value="New" >
                                     <label for="default_Option1{{survey.id}}{{sur_number}}">New</label>                    
                                 </div>
                                 
                                 
-                                <div class="coloronline" onclick="state_change('default_Option2{{survey.id}}{{sur_number}}', 'survey_status{{survey.id}}', 'button_stat_change{{survey.id}}{{sur_number}}', 'survey{{sur_number}}', 'default_Option1{{survey.id}}{{sur_number}}')" >
+                                <div class="coloronline"  onclick="state_change('default_Option2{{survey.id}}{{sur_number}}', 'survey_status{{survey.id}}', 'button_stat_change{{survey.id}}{{sur_number}}', 'survey{{sur_number}}')" >
                                     <input type="radio" name="button_row" id="default_Option2{{survey.id}}{{sur_number}}" value="Online" >
                                     <label  for="default_Option2{{survey.id}}{{sur_number}}">Online</label>
                                 </div>
                                 
                                 
-                                <div class="colorclosed" onclick="state_change('default_Option3{{survey.id}}{{sur_number}}', 'survey_status{{survey.id}}', 'button_stat_change{{survey.id}}{{sur_number}}', 'survey{{sur_number}}', 'default_Option1{{survey.id}}{{sur_number}}')" >
+                                <div class="colorclosed"  onclick="state_change('default_Option3{{survey.id}}{{sur_number}}', 'survey_status{{survey.id}}', 'button_stat_change{{survey.id}}{{sur_number}}', 'survey{{sur_number}}')" >
                                     <input  type="radio" name="button_row" id="default_Option3{{survey.id}}{{sur_number}}" value="Closed">
                                     <label for="default_Option3{{survey.id}}{{sur_number}}" >Closed</label>
                                 </div>
