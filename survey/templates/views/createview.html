@@ -6,15 +6,13 @@
     
     <div class='new_survey'>
 
-        <form  class="form_region" method="POST" action="/create-survey">  
+        <form  class="form_region" method="POST" action="/create-survey/send">  
 
             <div class="survey_info" id="survey_id">
                 <div>Title of the survey: <input type="text" name="survey_title" placeholder="Type your title" style="margin-bottom:8px;"/></div>
                 <textarea name="survey_desc" style="width:400px; height:50px;" placeholder="Type your description (optional)"></textarea>
-                <div class="question_list" id ="question_id">
-            </div>
-            <button type="button" onclick="question_adder()">Add question</button>
-    
+                <div class="question_list" id ="question_id"></div><br>
+                <button type="button" onclick="question_adder()">Add question</button>
             </div>
     
             <input class="create_survey" type="submit" value="Submit survey"/>

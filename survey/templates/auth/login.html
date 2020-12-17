@@ -2,14 +2,6 @@
 
 {% block content %}
     <h3>Login</h3>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="notification">
-            {{messages[0]}}
-        </div>
-    {% endif %}
-    {% endwith %}
-    <br/>
     <form class="new_survey" method="POST" action="/login">
         <div class="signup"><input class="email" type="email" name="email" placeholder="Email" autofocus=""></div>
         <div class="signup"><input class="pwd" type="password" name="password" placeholder="Password"></div>

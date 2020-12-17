@@ -2,17 +2,6 @@
 
 {% block content %}
     <h3>Sign Up</h3>
-
-
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="notification">
-            {{ messages[0]}}
-        </div>
-        <div>Go to <a href="{{ url_for('auth.login') }}">Login page</a></div>
-    {% endif %}
-    {% endwith %}
-    <br>
     <!-- <form method="POST" action="{{ url_for('auth.signup') }}" > -->
     <form class="new_survey"  method="POST" action="/signup" >
         <div class="signup" ><label><input placeholder="Email" type="email" name="email" required/></label></div>
