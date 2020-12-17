@@ -1,55 +1,66 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if current_user.is_authenticated %}
-        <a href="{{url_for('views.display_public_survey', survey_hash=selected_survey.survey_hash)}}"><h2>Public link {{selected_survey.survey_hash}}</h2></a>
-        <h1>Title: {{selected_survey.title}}</h1>
-        <h2>Description: {{selected_survey.description}}</h2>
-        {% for question, answers in info %}
-            <h3>Question {{loop.index}}: {{question.statement}}</h3>
-            <h4> Question type: {{question.question_type.name}}</h4>
-            {% if answers %}
-                <ul> {% for answer in answers %}
-                    <li> {{answer.statement}}</li>
-                    {% endfor %} </ul>
-             {% endif %}
-        {% endfor %}
-    {% else %}
+
     
-        <h1>Title: {{selected_survey.title}}</h1>
-        <h2>Description: {{selected_survey.description}}</h2>
+    <div class="answer">
 
-        <form method="POST" action="/{{selected_survey.survey_hash}}/answer">
-            {% for question, answers in info %}
-                <h3>Question {{loop.index}}: {{question.statement}}</h3>
+        {% if current_user.is_authenticated %}
+            <a href="{{url_for('views.display_public_survey', survey_hash=selected_survey.survey_hash)}}"><div class="linki">Public link {{selected_survey.survey_hash}}</div></a>
+            <div class="sur_title"><b>Title: </b>{{selected_survey.title}}</div>
+            <div class= "sur_desc"><b>Description: </b>{{selected_survey.description}}</div> 
+            
+            <div class="answer_question">
                 
-                {% set q_num = loop.index %}
-                {% if question.question_type.name == "OneAnswer" %}
-                    <div>Select one:</div><br>
-                    <div> {% for answer in answers %}
-                         <input type="radio" id="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
-                         <label for="ans{{loop.index}}">{{answer.statement}}</label><br>
-                        {% endfor %} </div>
-
-                {% elif question.question_type.name == "ManyAnswers" %}
-                    <div>Select one or more:</div><br>
-                    <div > {% for answer in answers %}
-                        <input type="checkbox" id="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
-                        <label for="ans{{loop.index}}">{{answer.statement}}</label><br>
-                        {% endfor %} </div>
-
-                {% elif question.question_type.name == "TextAnswer" %}
-                    <div>Write: </div>
-                    <textarea id="ans_q{{q_num}}" name="ans_q{{q_num}}"></textarea>
-
-                {% elif question.question_type.name == "NumberAnswer" %}
-                    <div>Select a number: <input type="number" id="ans_q{{q_num}}" name="ans_q{{q_num}}" min="{{1}}" max="{{100}}"></div>
-                {% endif %}
-            {% endfor %}
-        <a href= "{{url_for('views.create_answer', survey_hash=selected_survey.survey_hash)}}">
-            <button><input type="submit" value="Submit survey"/></button>
-        </a>
-        </form>
+                {% for question, answers in info %}
+                    <div class="question_title">Question {{loop.index}}: {{question.statement}}</div> 
+                    <div class="question_type"> Question type: {{question.question_type.name}}</div>
+                    {% if answers %}
+                        <ul class="options"> {% for answer in answers %}
+                            <li> {{answer.statement}}</li>
+                            {% endfor %} </ul>
+                     {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
         
-    {% endif %}
+            <div class="sur_title"><b>Title: </b>{{selected_survey.title}}</div>
+            <div class= "sur_desc"><b>Description: </b>{{selected_survey.description}}</div>
+        
+            <form class="formy" method="POST" action="/{{selected_survey.survey_hash}}/answer">
+                {% for question, answers in info %}
+                    <div class="question_title">{{question.statement}}</div> 
+                    
+                    {% set q_num = loop.index %}
+                    {% if question.question_type.name == "OneAnswer" %}
+                    <div class="question_type"> Select one:</div>
+                        <div class ="answer_of_question"> {% for answer in answers %}
+                             <input class="wiki" type="radio" id="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
+                             <label for="ans{{loop.index}}">{{answer.statement}}</label><br>
+                            {% endfor %} </div>
+    
+                    {% elif question.question_type.name == "ManyAnswers" %}
+                    <div class="question_type"> Select one or more:</div>
+                        <div > {% for answer in answers %}
+                            <input type="checkbox" id="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
+                            <label for="ans{{loop.index}}">{{answer.statement}}</label><br>
+                            {% endfor %} </div>
+    
+                    {% elif question.question_type.name == "TextAnswer" %}
+                    <div class="question_type">Write</div>
+                        <div class="texty"><textarea  id="ans_q{{q_num}}" name="ans_q{{q_num}}"></textarea></div>
+    
+                    {% elif question.question_type.name == "NumberAnswer" %}
+                        <div class="question_type"> Select a number:</div>
+                        <div class="numerito"><input  type="number" name="answer_q{{q_num}}" id="answer_q{{q_num}}" min="{{1}}" min="{{100}}"></div>
+                        
+                    {% endif %}
+                {% endfor %}
+            <a class="submiter" href= "{{url_for('views.create_answer', survey_hash=selected_survey.survey_hash)}}">
+                <button ><input type="submit" value="Submit survey"/></button>
+            </a>
+        </form>
+            
+        {% endif %}
+    </div>
 {% endblock %}

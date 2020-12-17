@@ -49,7 +49,7 @@ question_adder = () => {
                     <label for="question_type">  Answer type: </label>
                         <select name="question_type${question_count}" id="question_type${question_count}" onchange="qtype_checker(${question_count})">
                             <option value="one">One-choice</option>
-                            <option value="mult">Multiple choice</option>
+                            <option value="mult">Mult-choice</option>
                             <option value="text">Text</option>
                             <option value="num">Number</option>
                         </select>
