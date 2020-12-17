@@ -33,8 +33,6 @@ qtype_checker = (question_idx) => {  // checks when the answer type changes
 // }
 
 
-
-
 question_adder = () => {
     let htmlString = `
         <div id="question${question_count}">
@@ -75,11 +73,13 @@ question_adder = () => {
     }
     
     question_deleters.push(() => {
+
         question_list.removeChild(global_div)
         // updates the range of the question position when a question is deleted 
         for (let i = 0; i < q_nums.length; i++) {
             q_nums[i].setAttribute("max", question_list.children.length)
             q_nums[i].value = Math.min(q_nums[i].value, question_list.children.length)
+            answer_deleters.push()
         }
     })
 

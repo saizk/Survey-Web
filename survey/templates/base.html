@@ -7,15 +7,14 @@
               href="{{ url_for('static', filename='survey.css') }}">
     </head>
 
-
     <body>
         <header>
             <h1><span class="blue">&lt;</span>Best<span class="blue">&gt;</span> <span class="yellow">Surveys</span> <span class="blue">&lt;</span>Online<span class="blue">&gt;</span></h1>
             <div class="topnav">
                 <a class="menuhome", href="{{ url_for('main.index') }}"> Home </a>
                 {% if current_user.is_authenticated %}
-                    <a class="menu", href="{{ url_for('views.surveyview') }}"> My Surveys </a>
-                    <a class="menu", href="{{ url_for('views.createview') }}"> Create a Survey </a>
+                    <a class="menu", href="{{ url_for('views.survey_view') }}"> My Surveys </a>
+                    <a class="menu", href="{{ url_for('views.create_view') }}"> Create a Survey </a>
                 {% endif %}
                 {% if not current_user.is_authenticated %}
                     <a class="menu", href="{{ url_for('auth.login') }}">Login</a>

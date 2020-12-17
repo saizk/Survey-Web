@@ -4,14 +4,13 @@
 <table class="bigcell">
 
     <tbody>
-        <script src="{{ url_for('static', filename='survey.js') }}"></script>
-        
+        <script src="{{ url_for('static', filename='status.js') }}"></script>
         
         <tr>                    
-            <!-- <td class="firstcol" href= "{{url_for('views.displaysurvey',survey_id=survey.id)}}"></td>      <button>Survey {{sur_number}}</button><td>  -->
+            <!-- <td class="firstcol" href= "{{url_for('views.display_survey',survey_id=survey.id)}}"></td>      <button>Survey {{sur_number}}</button><td>  -->
             
             <td class="firstcol"> 
-                <a href= "{{url_for('views.displaysurvey',survey_id=survey.id)}}"> Survey {{sur_number}}  </a> 
+                <a href= "{{url_for('views.display_survey',survey_id=survey.id)}}"> Survey {{sur_number}}  </a> 
             </td>
 
             <td class="secondcol" > 
@@ -20,7 +19,7 @@
                 <div class="smallcell">
                     <div class="insidetable-wide">          
                         <span class="insidetable" style="max-width: 33%; min-width: 150px;"> Title: {{survey.title}} </span>
-                        <span class="insidetable" style="max-width: 33%; min-width: 150px">Number of Answers: {{answer_number[survey.id]}}</span>
+                        <span class="insidetable" style="max-width: 33%; min-width: 150px">Number of Answers: {{0}}</span>
                         <span id = "survey_status{{survey.id}}" class="insidetable" style="max-width: 33%; min-width: 150px"> Status: {{survey.state.name.capitalize()}}  </span>
                         
                     </div>
@@ -38,12 +37,10 @@
                                 <label for="default_Option1{{sur_number}}">New</label>
                             </div>
                             
-
                             <div class="coloronline" onclick="state_change('default_Option2{{sur_number}}', 'survey_status{{survey.id}}')" >
                                 <input type="radio" name="button_row{{sur_number}}" id="default_Option2{{sur_number}}" value="Online" >
                                 <label  for="default_Option2{{sur_number}}">Online</label>
                             </div>
-
 
                             <div class="colorclosed" onclick="state_change('default_Option3{{sur_number}}', 'survey_status{{survey.id}}')" >
                                 <input  type="radio" name="button_row{{sur_number}}" id="default_Option3{{sur_number}}" value="Closed">
@@ -54,7 +51,6 @@
                </div>       
             </td>
         </tr>
-
 
     </tbody>
 </table>

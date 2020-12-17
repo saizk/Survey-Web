@@ -40,6 +40,14 @@ class Survey(db.Model):
         order_by="Question.position"
     )
 
+    survey_answers = db.relationship(
+        "SurveyAnswer",
+        backref="survey",
+        lazy=True,
+        cascade="all, delete-orphan",
+        order_by="SurveyAnswer.timestamp"
+    )
+
 class QuestionType(enum.Enum):
     OneAnswer = 1
     ManyAnswers = 2
@@ -54,46 +62,45 @@ class Question(db.Model):
     question_type = db.Column(db.Enum(QuestionType), nullable=False)
     position = db.Column(db.Integer, nullable=False)
 
-    options = db.relationship(
+    answer_options = db.relationship(
         "QuestionOption",
         backref="question",
         lazy=True,
         cascade="all, delete-orphan",
-        # order_by= ??
+        order_by= "QuestionOption.position"  # needed js implementation for position
     )
-    # answers = db.relationship(
-    #     "QuestionAnswer",
-    #     backref="question",
-    #     lazy=True,
-    #     cascade="all, delete-orphan",
-    #     # order_by="Question.position"
-    # )
-    
+    answers = db.relationship(
+        "QuestionAnswer",
+        backref="question",
+        lazy=True,
+        cascade="all, delete-orphan",
+        # order_by=""
+    )
 
 class QuestionOption(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer,db.ForeignKey("question.id"), nullable=False)
-    statement = db.Column(db.String(512), nullable=False)
-    position = db.Column(db.Integer, nullable=False)
-
-
-class SurveyAnswer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(512), nullable=True)
-    timestamp = db.Column(db.DateTime(), nullable=False)
-
-    question_id = db.Column(db.Integer, db.ForeignKey("question.id"), nullable=False)
-    question_option_id = db.Column(db.Integer,db.ForeignKey("question_option.id"), nullable=False)
-    answer_id = db.Column(db.Integer, db.ForeignKey("question_answer.id"), nullable=False)
-    
+    statement = db.Column(db.String(512), nullable=True)  # empty if answer is user text or number
+    position = db.Column(db.Integer, nullable=False)  # needed js
 
 class QuestionAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    question_id = db.Column(db.Integer,db.ForeignKey("question.id"), nullable=False)
+
+    text = db.Column(db.String(512), nullable=True)  # filled if answer is a user text
+    number = db.Column(db.Integer, nullable=True)  # filled if answer is a number
+
+    answered_question_id = db.Column(db.Integer, db.ForeignKey("question.id"), nullable=False)
+    question_option_id = db.Column(db.Integer,db.ForeignKey("question_option.id"), nullable=False)
+    answer_id = db.Column(db.Integer, db.ForeignKey("survey_answer.id"), nullable=False)
+    
+class SurveyAnswer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime(), nullable=False)
+
+    survey_id = db.Column(db.Integer,db.ForeignKey("survey.id"), nullable=False)
     answers = db.relationship(
-        "SurveyAnswer",
-        backref="question_answer",
+        "QuestionAnswer",
+        backref="survey_answer",
         lazy=True,
         cascade="all, delete-orphan",
-        order_by="Question.position"
     )

@@ -89,6 +89,6 @@ def index():
 @bp.route("/profile")
 def profile():
    
-    survey_number = len(model.Survey.query.filter_by(owner_id = current_user.id).all())
+    survey_number = model.Survey.query.filter_by(owner_id = current_user.id).count()
 
     return render_template("main/profile.html", survey_number = survey_number)  

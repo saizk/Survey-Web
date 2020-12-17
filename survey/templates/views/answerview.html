@@ -14,32 +14,40 @@
                     {% endfor %} </ul>
              {% endif %}
         {% endfor %}
-    {% elif not current_user.is_authenticated %}
+    {% else %}
+    
         <h1>Title: {{selected_survey.title}}</h1>
         <h2>Description: {{selected_survey.description}}</h2>
-        <form method="POST">  <!-- action="submit-answer" -->
+
+        <form method="POST" action="create_answer{{selected_survey.survey_hash}}">
             {% for question, answers in info %}
                 <h3>Question {{loop.index}}: {{question.statement}}</h3>
-                <h4> Question type: {{question.question_type.name}}</h4>
+                
                 {% set q_num = loop.index %}
                 {% if question.question_type.name == "OneAnswer" %}
-                    <div> Options: {% for answer in answers %}
-                         <input name="ans{{loop.index}}_q{{q_num}}" id="ans{{loop.index}}"type="radio" value="ans{{loop.index}}">
+                    <div>Select one:</div><br>
+                    <div> {% for answer in answers %}
+                         <input type="radio" id="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
                          <label for="ans{{loop.index}}">{{answer.statement}}</label><br>
                         {% endfor %} </div>
+
                 {% elif question.question_type.name == "ManyAnswers" %}
-                    <div> Options: {% for answer in answers %}
-                        <input name="ans{{loop.index}}_q{{q_num}}" id="ans{{loop.index}}" type="checkbox" value="ans{{loop.index}}">
+                    <div>Select one or more:</div><br>
+                    <div > {% for answer in answers %}
+                        <input type="checkbox" id="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
                         <label for="ans{{loop.index}}">{{answer.statement}}</label><br>
                         {% endfor %} </div>
+
                 {% elif question.question_type.name == "TextAnswer" %}
-                        <textarea name="" id="ans{{loop.index}}"></textarea>
+                    <div>Write: </div>
+                    <textarea id="ans_q{{q_num}}" name="ans_q{{q_num}}"></textarea>
+
                 {% elif question.question_type.name == "NumberAnswer" %}
-                    <div> <input id="ans{{loop.index}}" type="number" min="{{1}}" max="{{100}}"> </div>
+                    <div>Select a number: <input type="number" id="ans_q{{q_num}}" name="ans_q{{q_num}}" min="{{1}}" max="{{100}}"></div>
                 {% endif %}
             {% endfor %}
         </form>
-        <a href= "{{url_for('views.create_answer', survey_hash=selected_survey.survey_hash)}}">text
+        <a href= "{{url_for('views.create_answer', survey_hash=selected_survey.survey_hash)}}">
             <button><input type="submit" value="Submit survey"/></button>
         </a>
     {% endif %}
