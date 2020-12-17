@@ -92,12 +92,6 @@ def create_answer(survey_hash):
 
     return render_template("main/index.html",  current_user=current_user)
 
-@bp.route("/<survey_hash>/results")
-@login_required
-def resultsview(survey_hash):
-    selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first()
-    return render_template("views/resultsview.html",  current_user=current_user, survey=selected_survey)
-
 def question_mapper(value):
     if value == "one":
         return(model.QuestionType.OneAnswer)
@@ -211,6 +205,17 @@ def display_survey(survey_hash):
 def display_public_survey(survey_hash):
     selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first_or_404()
     questions = model.Question.query.filter_by(survey_id=selected_survey.id).order_by("position").all()
+    answers = model.SurveyAnswer.query.filter_by(survey_id=selected_survey.id).all()
+
+    answer_list = [(answer, )
+                    for answer in answers]
     question_list =  [(question, model.QuestionOption.query.filter_by(question_id=question.id).all()) 
                       for question in questions]
-    return render_template("views/answerview.html", selected_survey=selected_survey, info=question_list)
+    return render_template("views/answerview.html", selected_survey=selected_survey, info=question_list, answers=answers)
+
+
+@bp.route("/<survey_hash>/results")
+@login_required
+def resultsview(survey_hash):
+    selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first()
+    return render_template("views/resultsview.html",  current_user=current_user, survey=selected_survey)
