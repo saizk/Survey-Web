@@ -1,5 +1,5 @@
 question_count = 0
-// question_deleters = []
+question_deleters = []
 answer_deleters = []
 
 qtype_checker = (question_idx) => {  // checks when the answer type changes
@@ -33,43 +33,55 @@ qtype_checker = (question_idx) => {  // checks when the answer type changes
 // }
 
 
-/* <button id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_remove(${question_count})"> X </button> */
 
 
 question_adder = () => {
     let htmlString = `
-        <div name="question${question_count}">
-            <div class="question_div">Question ${question_count+1}: 
+        <div id="question${question_count}">
+            <div class="question_div">Question: 
+                <input name="num_q${question_count}" class="numq" type="number" min="1">
                 <input class="question q${question_count}" 
                         name="question" 
                         placeholder="Type your question">
+                <button id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_deleters[${question_deleters.length}]()"> X </button>
             </div>
-            <div class="question_type_div">
-                <label for="question_type">  Answer type: </label>
-                    <select name="question_type${question_count}" id="question_type${question_count}" onchange="qtype_checker(${question_count})">
-                        <option value="one">One-choice</option>
-                        <option value="mult">Multiple choice</option>
-                        <option value="text">Text</option>
-                        <option value="num">Number</option>
-                    </select>
+            
+            <div class="answersfor_q${question_count}">
+                <div class="question_type_div">
+                    <label for="question_type">  Answer type: </label>
+                        <select name="question_type${question_count}" id="question_type${question_count}" onchange="qtype_checker(${question_count})">
+                            <option value="one">One-choice</option>
+                            <option value="mult">Multiple choice</option>
+                            <option value="text">Text</option>
+                            <option value="num">Number</option>
+                        </select>
+                    <button id="add_answer_button${question_count}" type="button" tabindex="-1" onclick="answer_adder(${question_count})">Add answer</button>
+                </div>
             </div>
-            <button id="add_answer_button${question_count}" type="button" onclick="answer_adder(${question_count})">Add answer</button>
-
         </div>
-    
     `
     let div = document.createElement('div');
     div.innerHTML = htmlString.trim();
     let global_div = div.firstChild
 
-    document.getElementById("question_id").appendChild(global_div)
+    let question_list = document.getElementById("question_id")
+    question_list.appendChild(global_div)
 
-    // let question_list = document.getElementById("question_id").children[question_count]
-    // question_list.appendChild(global_div)
-
-    // question_deleters.push(() => {
-    //     question_list.removeChild(global_div)
-    // })
+    // updates the range of the quesiton position when a question is added
+    let q_nums = document.getElementsByClassName("numq")
+    for (let i = 0; i < q_nums.length; i++) {
+        q_nums[i].setAttribute("max", question_list.children.length)
+        q_nums[i].value = i + 1
+    }
+    
+    question_deleters.push(() => {
+        question_list.removeChild(global_div)
+        // updates the range of the question position when a question is deleted 
+        for (let i = 0; i < q_nums.length; i++) {
+            q_nums[i].setAttribute("max", question_list.children.length)
+            q_nums[i].value = Math.min(q_nums[i].value, question_list.children.length)
+        }
+    })
 
     answer_adder(question_count)
     question_count += 1
@@ -89,29 +101,10 @@ answer_adder = (question_idx) => {
     div.innerHTML = htmlString.trim();
     let global_div = div.firstChild
 
-    let answer_list = document.getElementById("question_id").children[question_idx]
+    let answer_list = document.getElementById(`question${question_idx}`).children[1]
     answer_list.appendChild(global_div)
 
     answer_deleters.push(() => {
         answer_list.removeChild(global_div)
     })
 }
-
-
-
-state_change = (button_id, status_id) =>{
-    
-    let survey_state = document.getElementById(button_id).value;   
-    let survey_status = document.getElementById(status_id)
-    survey_status.innerText = "Status: " + survey_state; 
-    
-    
-}
-
-
-
-
-
-
-
-

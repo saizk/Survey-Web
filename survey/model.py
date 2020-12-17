@@ -39,13 +39,6 @@ class Survey(db.Model):
         cascade="all, delete-orphan",
         order_by="Question.position"
     )
-    answers = db.relationship(
-        "SurveyAnswer",
-        backref="survey",
-        lazy=True,
-        cascade="all, delete-orphan",
-        order_by="Question.position"
-    )
 
 class QuestionType(enum.Enum):
     OneAnswer = 1
@@ -57,7 +50,7 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     survey_id = db.Column(db.Integer,db.ForeignKey("survey.id"), nullable=False)
     
-    statement = db.Column(db.String(1024), nullable=False)
+    statement = db.Column(db.String(512), nullable=False)
     question_type = db.Column(db.Enum(QuestionType), nullable=False)
     position = db.Column(db.Integer, nullable=False)
 
@@ -70,7 +63,7 @@ class Question(db.Model):
     )
     # answers = db.relationship(
     #     "QuestionAnswer",
-    #     backref="Question",
+    #     backref="question",
     #     lazy=True,
     #     cascade="all, delete-orphan",
     #     # order_by="Question.position"
@@ -80,35 +73,27 @@ class Question(db.Model):
 class QuestionOption(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer,db.ForeignKey("question.id"), nullable=False)
-    statement = db.Column(db.String(1024), nullable=False)
+    statement = db.Column(db.String(512), nullable=False)
     position = db.Column(db.Integer, nullable=False)
 
+
+class SurveyAnswer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(512), nullable=True)
+    timestamp = db.Column(db.DateTime(), nullable=False)
+
+    question_id = db.Column(db.Integer, db.ForeignKey("question.id"), nullable=False)
+    question_option_id = db.Column(db.Integer,db.ForeignKey("question_option.id"), nullable=False)
+    answer_id = db.Column(db.Integer, db.ForeignKey("question_answer.id"), nullable=False)
+    
 
 class QuestionAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer,db.ForeignKey("question.id"), nullable=False)
-
-    question_option_id = db.Column(db.Integer,db.ForeignKey("question_option.id"), nullable=False)
-    answer_list = db.relationship(  # single/multiple choice
-        "QuestionOption",
-        backref="QuestionAnswer",
-        lazy=True,
-        # cascade="delete-orphan",
-    )
-
-    answer_text = db.Column(db.String(1024)) # QuestionType 3
-    answer_number = db.Column(db.Integer) # QuestionType 4
-
-
-class SurveyAnswer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)  
-    survey_id = db.Column(db.Integer, db.ForeignKey("survey.id"), nullable=False) 
-    timestamp = db.Column(db.DateTime(), nullable=False)
-    answer_id = db.Column(db.Integer, db.ForeignKey("question_answer.id"), nullable=False)
     answers = db.relationship(
-        "QuestionAnswer",
-        backref="SurveyAnswer",
+        "SurveyAnswer",
+        backref="question_answer",
         lazy=True,
-        # cascade="all, delete-orphan",
-        # order_by="Question.position"
+        cascade="all, delete-orphan",
+        order_by="Question.position"
     )
