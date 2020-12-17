@@ -35,13 +35,13 @@ qtype_checker = (question_idx) => {  // checks when the answer type changes
 
 question_adder = () => {
     let htmlString = `
-        <div id="question${question_count}">
+        <div id="question${question_count}" class="question_survey">
             <div class="question_div">Question: 
                 <input name="num_q${question_count}" class="numq" type="number" min="1">
                 <input class="question q${question_count}" 
                         name="question" 
                         placeholder="Type your question">
-                <button id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_deleters[${question_deleters.length}]()"> X </button>
+                <button class="xbutton" id="del_question_button${question_count}" type="button" tabindex="-1" onclick="question_deleters[${question_deleters.length}]()"> X </button>
             </div>
             
             <div class="answersfor_q${question_count}">
@@ -91,10 +91,11 @@ answer_adder = (question_idx) => {
 
     let htmlString = `
         <div class="answerfor${question_idx}">Answer: 
-            <input class="answer q${question_idx}" 
+            <input class="answer_text"
+                    class="answer q${question_idx}" 
                     name="answerfor${question_idx}" 
                     placeholder="Type your answer">
-            <button id="del_answer_button${question_idx}" type="button" tabindex="-1" onclick="answer_deleters[${answer_deleters.length}]()"> X </button>
+            <button class= "xanswer" id="del_answer_button${question_idx}" type="button" tabindex="-1" onclick="answer_deleters[${answer_deleters.length}]()"> X </button>
         </div>
     `
     let div = document.createElement('div');
