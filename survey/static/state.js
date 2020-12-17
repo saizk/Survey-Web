@@ -14,16 +14,30 @@ state_change = (button_id, status_id, save_button_id, hidden_id) =>{
 
 }
 
-// check_uncheck = (button_id, status_id)  =>{
-    
-//     let button_value =  document.getElementById(button_id).value;
 
-//     let current_status = document.getElementById(status_id)
-//     current_status.innerText.slice(9);
 
-//     console.log(current_status.innerText)
 
-//     if (current_status === button_value){
-//         document.getElementById(button_id).checked = true
-//     }
-// }
+window.addEventListener("load", () => {
+
+
+    let surveys = document.getElementsByClassName("survey")
+
+    for (let survey of surveys){
+
+        if (survey.getAttribute("data") === "new" ){
+            
+            survey.getElementsByClassName("button_new")[0].setAttribute("checked", "")
+
+        }   
+        else if (survey.getAttribute("data") === "online" ){
+
+            survey.getElementsByClassName("button_online")[0].setAttribute("checked", "")
+        } 
+        else if (survey.getAttribute("data") === "closed" ){
+
+            survey.getElementsByClassName("button_closed")[0].setAttribute("checked", "")
+        } 
+
+    }
+
+})

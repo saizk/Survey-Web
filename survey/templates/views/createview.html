@@ -3,17 +3,22 @@
 {% block content %}
     <script src="{{ url_for('static', filename='createsurvey.js') }}"></script>
 
-    <form method="POST" action="/create-survey">  
-        <div class="survey_info" id="survey_id">
-            <div>Title of the survey: <input type="text" name="survey_title" placeholder="Type your title"/></div>
-            <textarea name="survey_desc" style="width:400px; height:50px;" placeholder="Type your description (optional)"></textarea>
-        </div>
-        <button type="button" onclick="question_adder()">Add question</button>
-        <div class="question_list" id ="question_id">
-
-        </div>
-
-        <div class="create_survey"><input type="submit" value="Submit survey"/></div>
-    </form>
+    
+    <div class='container'>
+        <form method="POST" action="/create-survey">  
+            <div class="survey_info" id="survey_id">
+                <div>Title of the survey: <input type="text" name="survey_title" placeholder="Type your title"/></div>
+                <textarea name="survey_desc" style="width:400px; height:50px;" placeholder="Type your description (optional)"></textarea>
+            </div>
+            <button type="button" onclick="question_adder()">Add question</button>
+            <div class="question_list" id ="question_id">
+    
+            </div>
+    
+            <div class="create_survey"><input type="submit" value="Submit survey"/></div>
+        </form>
+      <div>
+    
 
 {% endblock %}
+
