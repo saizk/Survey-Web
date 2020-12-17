@@ -33,7 +33,7 @@ def surveys_view():
     for survey in survey_list:
         answer_number[survey.id] = model.SurveyAnswer.query.filter_by(id = survey.id).count()
 
-    status_list={}  
+    status_list = {}  
     for survey in survey_list:
         current_survey_state = model.Survey.query.filter_by(id = survey.id).first()
         status_list[survey.id] = current_survey_state.state.name
@@ -55,21 +55,20 @@ def create_answer(survey_hash):
     new_survey_answer = model.SurveyAnswer(survey_id=selected_survey.id, timestamp=datetime.datetime.now(dateutil.tz.tzlocal()))
 
     survey_questions = model.Question.query.filter_by(survey_id=selected_survey.id).all()
-    print("Survey_questions", survey_questions)
+    # print("Survey_questions", survey_questions)
     for q_idx, question in enumerate(survey_questions):
         
         selected_ans_options = request.form.getlist("ans_q%d" % (q_idx+1))
-        print("Selected options:", selected_ans_options)
-        print("statement",question.statement)
+        # print("Selected options:", selected_ans_options)
+        # print("statement",question.statement)
         
         text, number = None, None
         if question.question_type.name == "TextAnswer":
             text = selected_ans_options[0]
-            print("text:", text)
+            # print("text:", text)
         elif question.question_type.name == "NumberAnswer":
-            print(selected_ans_options)
             number = int(selected_ans_options[0])
-            print("number", number)
+            # print("number", number)
         
         for a_idx, ans_statement in enumerate(selected_ans_options):
             ans_options = model.QuestionOption.query.filter_by(question_id=question.id, position=a_idx+1).all()
@@ -77,7 +76,7 @@ def create_answer(survey_hash):
             for ans_option in ans_options:
                 new_question_answer = model.QuestionAnswer(
                                         text=text, number=number,
-                                        answered_question_id = question.id,
+                                        answered_question_id = q_idx+1,
                                         question_option_id=ans_option.id,
                                         answer_id=selected_survey.id
                                     )
@@ -128,7 +127,7 @@ def create_survey():
 
     # Checks for empty questions and possible answers
     questions = request.form.getlist("question")
-    print("Questions", questions)
+    # print("Questions", questions)
     if not questions or any(not q for q in questions):  # ["", "", ...]
         flash("Cannot create a survey with empty questions")
         return redirect(url_for("views.create_view"))
@@ -174,13 +173,13 @@ def add_question(survey_hash):
 
     # Checks for empty question fields
     questions = request.form.getlist("question")
-    print(questions)
-    if not questions or any(len(q) == 0 for q in questions):  # ["", "", ...]
+    # print(questions)
+    if not questions or any(not q for q in questions):  # ["", "", ...]
         flash("Empty questions cannot be added to a survey")
         return redirect(url_for("views.add_question_view", survey_hash=selected_survey.survey_hash))
 
     num_question =  model.Question.query.filter_by(survey_id=selected_survey.id).count() # position
-    print(num_question, type(num_question))
+    # print(num_question, type(num_question))
     for idx, question in enumerate(questions):
         qrawtype = request.form.get("question_type%d" % idx)
         question_type = question_mapper(qrawtype)
@@ -193,22 +192,18 @@ def add_question(survey_hash):
 @login_required
 def display_survey(survey_hash):
     selected_survey = model.Survey.query.filter_by(survey_hash=survey_hash).first_or_404()
-    survey_questions = model.Question.query.filter_by(survey_id=selected_survey.id).order_by("survey_id").all()
-    survey_answers = model.SurveyAnswer.query.filter_by(survey_id=selected_survey.id).order_by("survey_id").all()
-    question_answers = [model.QuestionAnswer.query.filter_by(answered_question_id=question_answer.id).all()
-                            for question_answer in survey_answers]
-
-    surveys_info = [(survey_answer, list(zip(survey_questions, question_answers[idx])))
-                    for idx, survey_answer in enumerate(survey_answers)]
 
 
-    print("survey quetsions:", survey_questions)
-    print("answers", survey_answers)
-    print("question answers", question_answers)
-    
-    print("Answers", list(surveys_info))
+    questions = model.Question.query.filter_by(survey_id=selected_survey.id).order_by("survey_id").all()
+    survey_answer = model.SurveyAnswer.query.filter_by(survey_id=selected_survey.id).order_by("survey_id").all()
+    num_answers = model.SurveyAnswer.query.filter_by(survey_id=selected_survey.id).order_by("survey_id").count()
 
-    return render_template("views/answerview.html", selected_survey=selected_survey, surveys_info=surveys_info)
+    question_list =  [(question, model.QuestionOption.query.filter_by(question_id=question.id).all()) 
+                      for question in questions]
+
+    # answer_list = [(answer, model.QuestionAnswer.query.filter_by(survey_id=selected_survey.id).count())
+    #                 for answer in survey_answers]
+    return render_template("views/answerview.html", selected_survey=selected_survey, question_list=question_list, num_answers=num_answers)
 
 @bp.route("/<survey_hash>")
 def display_public_survey(survey_hash):
@@ -221,7 +216,5 @@ def display_public_survey(survey_hash):
     # question_list =  [(question, model.QuestionOption.query.filter_by(question_id=question.id).all()) 
     #                   for question in survey_questions]
     
-    # answer_list = [(answer, model.QuestionAnswer.query.filter_by(survey_id=selected_survey.id).all())
-    #                 for answer in survey_answers]
     return render_template("views/answerview.html",  current_user=current_user, selected_survey=selected_survey, question_list=question_list)
 

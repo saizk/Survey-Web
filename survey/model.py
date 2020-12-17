@@ -98,6 +98,7 @@ class SurveyAnswer(db.Model):
     timestamp = db.Column(db.DateTime(), nullable=False)
 
     survey_id = db.Column(db.Integer,db.ForeignKey("survey.id"), nullable=False)
+    
     answers = db.relationship(
         "QuestionAnswer",
         backref="survey_answer",

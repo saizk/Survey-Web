@@ -9,16 +9,17 @@
             <a href="{{url_for('views.display_public_survey', survey_hash=selected_survey.survey_hash)}}"><div class="linki">Public link {{selected_survey.survey_hash}}</div></a>
             <div class="sur_title"><b>Title: </b>{{selected_survey.title}}</div>
             <div class= "sur_desc"><b>Description: </b>{{selected_survey.description}}</div> 
-            
+            <div class= "sur_desc"><b>Number of answers: </b>{{num_answers}}</div> 
             <div class="answer_question">
-                
                 {% for question, answers in question_list %}
                     <div class="question_title">Question {{loop.index}}: {{question.statement}}</div> 
                     <div class="question_type"> Question type: {{question.question_type.name}}</div>
                     {% if answers %}
                         <ul class="options"> {% for answer in answers %}
-                            <li> {{answer.statement}}</li>
-                            {% endfor %} </ul>
+                            {% if answer.statement %}
+                                <li> {{answer.statement}}</li>
+                            {% endif %}
+                        {% endfor %} </ul>
                      {% endif %}
                 {% endfor %}
             </div>
@@ -35,14 +36,15 @@
                     {% if question.question_type.name == "OneAnswer" %}
                     <div class="question_type"> Select one:</div>
                         <div class ="answer_of_question"> {% for answer in answers %}
-                             <input class="wiki" type="radio" id="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
+                             <input class="radio" type="radio" id="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
                              <label for="ans{{loop.index}}">{{answer.statement}}</label><br>
                             {% endfor %} </div>
     
                     {% elif question.question_type.name == "ManyAnswers" %}
                     <div class="question_type"> Select one or more:</div>
-                        <div > {% for answer in answers %}
-                            <input type="checkbox" id="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
+                        <div class ="answer_of_question"> {% for answer in answers %}
+                            <input class="checkbox" type="checkbox" id
+                            ="ans{{loop.index}}" name="ans_q{{q_num}}" value="{{answer.statement}}">
                             <label for="ans{{loop.index}}">{{answer.statement}}</label><br>
                             {% endfor %} </div>
     
@@ -52,8 +54,7 @@
     
                     {% elif question.question_type.name == "NumberAnswer" %}
                         <div class="question_type"> Select a number:</div>
-                        <div class="numerito"><input  type="number" name="ans_q{{q_num}}" id="ans_q{{q_num}}" min="{{1}}" min="{{100}}"></div>
-                        
+                        <div class="number"><input type="number" name="ans_q{{q_num}}" id="ans_q{{q_num}}" min="{{1}}" min="{{100}}"></div>
                     {% endif %}
                 {% endfor %}
             <a class="submiter" href= "{{url_for('views.create_answer', survey_hash=selected_survey.survey_hash)}}">
