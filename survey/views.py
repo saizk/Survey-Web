@@ -88,29 +88,40 @@ def create_answer(survey_hash):
 
     new_survey_answer = model.SurveyAnswer(survey_id=selected_survey.id, timestamp=datetime.datetime.now(dateutil.tz.tzlocal()))
 
-    db.session.add(new_survey_answer)
-
     survey_questions = model.Question.query.filter_by(survey_id=selected_survey.id).all()
     print("Survey_questions", survey_questions)
-
-    for idx, question in enumerate(survey_questions):
-        if question.question_type.name == "TextAnswer":
-            text = request.form.get("ans_q%d" % idx)
-            print(text)
-        elif question.question_type.name == "NumberAnswer":
-            number = request.form.get("ans_q%d" % idx)
-            print(number)
-        # else:
-        selected_ans_options = request.form.getlist("ans_q%d" % idx)
+    for q_idx, question in enumerate(survey_questions):
+        
+        selected_ans_options = request.form.getlist("ans_q%d" % (q_idx+1))
         print("Selected options:", selected_ans_options)
-        for ans_option in selected_ans_options:
-            print(ans_option)
-            new_question_answer = model.QuestionAnswer(
-                                    answered_question_id = question.id,
-                                    question_option_id=ans_option.id,
-                                    answer_id=selected_survey.id
-                                )
-            db.session.add(new_question_answer)
+
+        if question.question_type.name == "TextAnswer":
+            text = selected_ans_options[0]
+            print("text:", text)
+        elif question.question_type.name == "NumberAnswer":
+            number = int(selected_ans_options[0])
+            print("number", number)
+        else:
+            text, number = None, None
+        
+        for a_idx, ans_statement in enumerate(selected_ans_options):
+            ans_options = model.QuestionOption.query.filter_by(question_id=question.id, position=a_idx+1).all()
+            print("ans_options", ans_options)
+            for ans_option in ans_options:
+                new_question_answer = model.QuestionAnswer(
+                                        text=text, number=number,
+                                        answered_question_id = question.id,
+                                        question_option_id=ans_option.id,
+                                        answer_id=selected_survey.id
+                                    )
+                if text:
+                    text = None
+                if number:
+                    number = None
+                db.session.add(new_question_answer)
+                db.session.commit()
+    
+    db.session.add(new_survey_answer)
     db.session.commit()
 
     return render_template("main/index.html",  current_user=current_user)

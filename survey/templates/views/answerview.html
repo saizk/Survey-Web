@@ -10,7 +10,7 @@
             <h4> Question type: {{question.question_type.name}}</h4>
             {% if answers %}
                 <ul> {% for answer in answers %}
-                    <li>Option: {{answer.statement}}</li>
+                    <li> {{answer.statement}}</li>
                     {% endfor %} </ul>
              {% endif %}
         {% endfor %}
@@ -19,7 +19,7 @@
         <h1>Title: {{selected_survey.title}}</h1>
         <h2>Description: {{selected_survey.description}}</h2>
 
-        <form method="POST" action="create_answer{{selected_survey.survey_hash}}">
+        <form method="POST" action="/survey/{{selected_survey.survey_hash}}/answer">
             {% for question, answers in info %}
                 <h3>Question {{loop.index}}: {{question.statement}}</h3>
                 
@@ -46,9 +46,10 @@
                     <div>Select a number: <input type="number" id="ans_q{{q_num}}" name="ans_q{{q_num}}" min="{{1}}" max="{{100}}"></div>
                 {% endif %}
             {% endfor %}
-        </form>
         <a href= "{{url_for('views.create_answer', survey_hash=selected_survey.survey_hash)}}">
             <button><input type="submit" value="Submit survey"/></button>
         </a>
+        </form>
+        
     {% endif %}
 {% endblock %}
